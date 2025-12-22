@@ -1,0 +1,193 @@
+@media only screen and (min-width: 600px) {
+    body {
+      font-size: 1.1em;
+      justify-content: center;
+      align-items: center;
+    }
+    .chakra {
+        font-size: 1.1em;
+    }
+  }
+  
+  main {
+    padding: 0px;
+    margin: 2%; 
+    vertical-align: middle;
+}
+
+a:link, .link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer
+  }
+  
+  /* visited link */
+  a:visited .link:visited {
+    color: blue;
+  }
+  
+  /* mouse over link */
+  a:hover .link:hover{
+    color: black;
+  }
+  
+  /* selected link */
+  a:active .link:active{
+    color: blue;
+  }
+
+#sangria { 
+    text-indent: 1.5em; 
+}
+
+#grid {
+    font-size: 1.1em;
+    height: 80px;
+    border: 0.5px solid #427562;
+    background-color: #00533e;
+    align-items: center;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 80px;
+}
+
+#grid:hover {
+    background-color: #427562;
+}
+
+.accordion-button, .accordion-item {
+  font-size: 1em !important;
+  height: 78px;
+  background-color: #00533e;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+}
+.accordion-item {
+  z-index: 1000;
+  position: relative;
+}
+.accordion-button:hover, .accordion-item:hover{
+  background-color: #427562;
+}
+
+
+.accordion-panel {
+  padding:0 !important;
+  background-color: #00533e;
+  color: white;
+  border: 0.5px solid #427562;
+  text-align: center;
+  
+  
+  
+}
+
+.accordion-link {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+.accordion-link:hover {
+  background-color: #427562;
+}
+
+.card {
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg,  #daa6b1 0%, #86a699 100%);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.password-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+}
+
+.login-title {
+    color: #00533e;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+#main {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-container .form-label, .password-container .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.login-container .form-control, .password-container .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button{background-color: #00533e !important;
+    color: white !important;
+    font-size: 1em !important;
+    border: none;
+    padding: 0.75em;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    
+}
+
+button:hover{
+    background-color: #427562 !important;
+}
+
+
+
+#normalbutton {
+    width: auto;
+    padding-inline: 10%;
+}
