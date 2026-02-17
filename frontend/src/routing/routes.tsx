@@ -13,9 +13,11 @@ import ProfilePage from "../pages/ProfilePage";
 import ChangePasswordPage from "../pages/ChangePasswordPage";
 import ChangeUserPage from "../pages/ChangeUserPage";
 import ProtectedRoute from "../api/protectedRoute";
+import CreateAccountPage from "../pages/CreateAccountPage";
 
 const router = createBrowserRouter([
   { path: "/breastultrasound", element: <LoginPage /> },
+  { path: "/breastultrasound/register", element: <CreateAccountPage /> },
   {
     path: "/breastultrasound",
     element: <Layout />,

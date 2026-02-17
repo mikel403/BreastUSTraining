@@ -31,7 +31,7 @@ const CalculateStatistics = () => {
   const physicistRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [characNormalize, setCharacNormalize] = useState<boolean>(true);
+  const [characNormalize, setCharacNormalize] = useState<boolean>(false);
 
   const handleSubmit = () => {
     axios

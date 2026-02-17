@@ -10,7 +10,10 @@ const authApi = axios.create({
 // authApi.defaults.headers.common["Authorization"]="JWT "+ useAuthStore.getState().accesstoken
 authApi.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accesstoken;
-  config.headers["Authorization"] = "JWT " + token;
+  if (token) {
+    config.headers["Authorization"] = "JWT " + token;
+  }
+
   return config;
 });
 
