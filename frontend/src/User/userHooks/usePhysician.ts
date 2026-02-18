@@ -2,8 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "../../libs/axios";
 import { Physician } from "./userInfo";
 
+type UsePhysicianOptions = {
+  enabled?: boolean;
+};
 
-const usePhysician = () => {
+const usePhysician = (options: UsePhysicianOptions = {}) => {
     const fetchPhysician = () =>
       axios
         .get<Physician>(
@@ -15,6 +18,8 @@ const usePhysician = () => {
     return useQuery<Physician, Error>({
       queryKey: ["Physicians"],
       queryFn: fetchPhysician,
+      enabled: options.enabled ?? false,
+      retry: false,
     });
   };
 

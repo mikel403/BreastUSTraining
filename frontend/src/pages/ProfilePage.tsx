@@ -1,37 +1,65 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import { Box, Button, Center, FormLabel, Input, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import usePhysician from "../User/userHooks/usePhysician";
 import setUser from "../User/userHooks/setUser";
+import useUser from "../User/userHooks/useUser";
 import setPhysician from "../User/userHooks/setPhysician";
 import useAuthStore from "../store/store";
+import { useEffect } from "react";
 const ProfilePage = () => {
   const test_username = useAuthStore.getState().username;
   const navigate = useNavigate();
-  const { data: physician, error, isLoading } = usePhysician();
-  const [username, setUsername] = useState<string | undefined>(
-    physician?.username
-  );
-  const [email, setEmail] = useState<string | undefined>(physician?.email);
-  const [first_name, setFirst_name] = useState<string | undefined>(
-    physician?.first_name
-  );
-  const [last_name, setLast_name] = useState<string | undefined>(
-    physician?.last_name
-  );
-  const [experience, setExperience] = useState<number | undefined>(
-    physician?.experience
-  );
-  const [profession, setProfession] = useState<string | undefined>(undefined);
+  const { data: user } = useUser();
+  const isPhysician = !!user?.is_physician;
+  console.log(isPhysician);
+  console.log(user);
+  const { data: physician } = usePhysician({ enabled: isPhysician });
 
-  const userFile = {
-    first_name: first_name,
-    email: email,
-    last_name: last_name,
-  };
-  const physicianFile = {
-    experience: experience,
-  };
+  
+  const [email, setEmail] = useState<string>("");
+  const [first_name, setFirst_name] = useState<string>("");
+  const [last_name, setLast_name] = useState<string>("");
+  const [experience, setExperience] = useState<number | "">("");
+  const [profession, setProfession] = useState<string>("");
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email ?? "");
+      setFirst_name(user.first_name ?? "");
+      setLast_name(user.last_name ?? "");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (physician) {
+      setProfession(physician.profession ?? ""); // si existe en tu backend
+      setExperience(
+        typeof physician.experience === "number" ? physician.experience : "",
+      );
+    } else {
+      // si no es physician, limpia por si vienes de otra sesión/estado
+      setProfession("");
+      setExperience("");
+    }
+  }, [physician]);
+
+  const userFile = useMemo(
+    () => ({
+      username: user?.username ?? "",   // obligatorio
+      first_name,
+      last_name,
+      email,
+    }),
+    [user?.username,first_name, last_name, email],
+  );
+  const physicianFile = useMemo(
+    () => ({
+      profession, // asegúrate de que tu API lo acepte
+      experience: experience === "" ? undefined : experience,
+    }),
+    [profession, experience],
+  );
 
   // const userref = useRef<HTMLInputElement>(undefined);
   // const emailref = useRef<HTMLInputElement>(undefined);
@@ -44,10 +72,11 @@ const ProfilePage = () => {
   const [fetchResult, setFetchResult] = useState("");
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    console.log(userFile);
+    setErrorMessage("");
+    setFetchResult("");
     if (test_username != "TestUser") {
       setUser({ userFile, setFetchResult, setErrorMessage });
-      setPhysician(physicianFile);
+      if (isPhysician) setPhysician(physicianFile);
     }
   };
   return (
@@ -63,11 +92,10 @@ const ProfilePage = () => {
                   </FormLabel>
                 </Box>
                 <Input
-                  defaultValue={physician?.username}
+                  value={user?.username ?? ""}
                   id="username"
                   className="form-control"
                   disabled={true}
-                  onChange={(event) => setUsername(event.target.value)}
                 />
               </Box>
               <Box width={350}>
@@ -76,10 +104,11 @@ const ProfilePage = () => {
                 </FormLabel>
                 <Input
                   mr={3}
-                  defaultValue={physician?.email}
+                  value={email}
                   id="email"
                   type="email"
                   className="form-control"
+                  disabled={test_username === "TestUser"}
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </Box>
@@ -90,9 +119,10 @@ const ProfilePage = () => {
                   <a>Name</a>
                 </FormLabel>
                 <Input
-                  defaultValue={physician?.first_name}
+                  value={first_name}
                   id="first_name"
                   className="form-control"
+                  disabled={test_username === "TestUser"}
                   onChange={(event) => setFirst_name(event.target.value)}
                 />
               </Box>
@@ -101,9 +131,10 @@ const ProfilePage = () => {
                   <a>Last name</a>
                 </FormLabel>
                 <Input
-                  defaultValue={physician?.last_name}
+                  value={last_name}
                   id="last_name"
                   className="form-control"
+                  disabled={test_username === "TestUser"}
                   onChange={(event) => setLast_name(event.target.value)}
                 />
               </Box>
@@ -118,8 +149,10 @@ const ProfilePage = () => {
                   <a>Profession</a>
                 </FormLabel>
                 <Input
-                  id="profesion"
+                  id="profession"
                   className="form-control"
+                  disabled={!isPhysician}
+                  value={profession}
                   onChange={(event) => setProfession(event.target.value)}
                 />
               </Box>
@@ -130,23 +163,28 @@ const ProfilePage = () => {
                   </FormLabel>
                 </Box>
                 <Input
-                  defaultValue={physician?.experience}
+                  
                   type="number"
                   id="experience"
                   className="form-control"
+                  disabled={!isPhysician}
+                  value={experience}
                   onChange={(event) => {
-                    if (event.target.value) {
-                      setExperience(parseInt(event.target.value, 10));
-                    }
+                    const v = event.target.value;
+                    setExperience(v === "" ? "" : parseInt(v, 10));
                   }}
                 />
               </Box>
             </Box>
-            {test_username == "TestUser" && (
+            {test_username === "TestUser" ? (
               <div className="text-danger">
                 As a test user you can not change the information
               </div>
-            )}
+            ) : !isPhysician ? (
+              <div className="text-warning">
+                Only radiologists can fill in profession and experience. If you want a radiologist user contact mcarrilero@dia.uned.es
+              </div>
+            ) : null}
             <Button mt={4} type="submit">
               Save Changes
             </Button>

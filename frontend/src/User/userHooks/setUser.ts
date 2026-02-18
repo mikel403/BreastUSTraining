@@ -1,8 +1,8 @@
 import axios from "../../libs/axios";
-import { User } from "./userInfo";
+import { UserUpdate } from "./userInfo";
 
 interface Props {
-  userFile: User;
+  userFile: UserUpdate;
   setFetchResult: React.Dispatch<React.SetStateAction<string>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
