@@ -31,7 +31,7 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
     <>
       <div className="mb-3">
         <FormLabel htmlFor="physicist" className="form-label">
-          Search for an expert by its username and check your agreement in Cohen's kappa
+          Search for a radiologist and evaluate your agreement using Cohen's kappa.
         </FormLabel>
         <Input
           ref={physicistRef}
@@ -50,7 +50,7 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
           <option value="1">1 time</option>
           <option value="2">2 or more times</option>
         </Select> */}
-        <Button mt={3} onClick={handleSubmit} id={"normalbutton"}>Calculate intercorrelation</Button>
+        <Button mt={3} onClick={handleSubmit} id={"normalbutton"}>Compare Agreement with Another Radiologist (Cohen’s κ)</Button>
         {errorMessage && <Alert status="error" mt={3}>{errorMessage}</Alert>}
       </div>
     </>

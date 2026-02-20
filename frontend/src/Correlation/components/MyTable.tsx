@@ -20,6 +20,8 @@ interface Props {
   intracorrelation: Correlation | undefined;
   intercorrelations: PhysicianCorrelation[];
   numIntracorrelation: Correlation | undefined;
+  fleiss: Correlation | undefined;
+  numFleiss: Correlation | undefined;
 }
 
 // Create your React component
@@ -27,6 +29,8 @@ const MyTable = ({
   intercorrelations,
   intracorrelation,
   numIntracorrelation,
+  fleiss,
+  numFleiss,
 }: Props) => {
   const parenthesisWrap = (wrap: String | number | undefined) => {
     if (wrap) {
@@ -44,7 +48,7 @@ const MyTable = ({
       </p>
       <Table variant="simple" mb={3}>
         <TableCaption placement="top">
-          <b>Correlation by Cohen's Kappa</b>
+          <b>Correlation</b>
         </TableCaption>
         <Thead>
           <Tr>
@@ -64,6 +68,17 @@ const MyTable = ({
                 {intracorrelation?.[column as keyof Correlation]}{" "}
                 {parenthesisWrap(
                   numIntracorrelation?.[column as keyof Correlation]
+                )}
+              </Th>
+            ))}
+          </Tr>
+          <Tr>
+            <Th>Fleiss</Th>
+            {columns.map((column) => (
+              <Th key={column}>
+                {fleiss?.[column as keyof Correlation]}{" "}
+                {parenthesisWrap(
+                  numFleiss?.[column as keyof Correlation]
                 )}
               </Th>
             ))}

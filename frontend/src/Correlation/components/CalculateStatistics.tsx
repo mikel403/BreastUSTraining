@@ -73,31 +73,6 @@ const CalculateStatistics = () => {
 
   return (
     <>
-      <Accordion allowToggle onChange={handleSubmit} mt={3} mb={3}>
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="center">
-              Statistics: tables
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </AccordionItem>
-      </Accordion>
-      <p>
-        The rows are the characteristics within each descriptor. The columns are
-        the BI-RADS malignancy classifications. These tables will help you
-        understand the influence of each characteristic in the classification.
-        To see this graphically, click on 'Show graphs'
-      </p>
-      {data &&
-        isTableClick &&
-        Object.keys(data).map((key) => (
-          <StatisticsTable
-            descriptor={key}
-            data={data[key as keyof typeof data]}
-          />
-        ))}
-
       <Accordion allowToggle onChange={handleCharts} mt={3}>
         <AccordionItem>
           <AccordionButton>
@@ -112,14 +87,9 @@ const CalculateStatistics = () => {
         <Box display={"flex"} justifyContent={"space-between"} mt={4}>
           <Box width={"46%"}>
             <FormLabel htmlFor="physicist" className="form-label">
-              The graphs are normalised by dividing by the total number of
-              descriptions for each characteristic, i.e. the sum of a line in
-              each graph adds up to one. This is useful to easily see the
-              evolution of each characteristic in the BI-RADS classification.
-              You can change the normalisation to BI-RADS so that the
-              characteristics sum to one for each BI-RADS. This is useful to
-              understand the importance of each characteristic in a specific
-              malignancy
+              The graphs display the distribution of descriptor categories
+              across BI-RADS assessments. Select a normalisation method to
+              interpret the patterns:
             </FormLabel>
             <div className="form-check">
               <input
@@ -133,7 +103,8 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="characNormalize">
-                Characteristic normalization
+                Descriptor normalisation: shows how BI-RADS varies for each
+                descriptor category. Each line sums to 100%.
               </label>
             </div>
             <div className="form-check">
@@ -148,14 +119,15 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="biradsNormalize">
-                BI-RADS normalization
+                BI-RADS normalisation: shows which descriptor categories are
+                most common within each BI-RADS group. Each BI-RADS column sums to 100%.
               </label>
             </div>
           </Box>
           <Box width={"46%"}>
             <FormLabel htmlFor="physicist" className="form-label">
-              Compare your graphs with those of other experts. The default is
-              Overall, which takes into account all users except yourself
+              Compare your patterns with those of other radiologists. “Overall”
+              includes all users except yourself.
             </FormLabel>
             <Input
               ref={physicistRef}
@@ -216,6 +188,33 @@ const CalculateStatistics = () => {
             )}
           </Box>
         ))}
+
+      <Accordion allowToggle onChange={handleSubmit} mt={3} mb={3}>
+        <AccordionItem>
+          <AccordionButton>
+            <Box flex="1" textAlign="center">
+              Statistics: tables
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </AccordionItem>
+      </Accordion>
+
+      {data && isTableClick && (
+        <>
+          <p>
+            The rows represent the categories within each descriptor, and the
+            columns represent the BI-RADS classifications. These tables show how
+            descriptor patterns are distributed across BI-RADS categories.
+          </p>
+          {Object.keys(data).map((key) => (
+            <StatisticsTable
+              descriptor={key}
+              data={data[key as keyof typeof data]}
+            />
+          ))}
+        </>
+      )}
     </>
   );
 };

@@ -20,8 +20,8 @@ const CalculateIntracorrelation = ({ setIntracorrelation,setNumIntracorrelation 
   return (
     <>
       <Box className="mb-3">
-        <p>Calculate your intracorrelation. The agreement you have with yourself when describing the same tumour after some time</p>
-        <Button onClick={handleSubmit} id={"normalbutton"}>Calculate intracorrelation</Button>
+        <p>Evaluate your intraobserver agreement (consistency over time when describing the same tumour).</p>
+        <Button onClick={handleSubmit} id={"normalbutton"}>Calculate Intraobserver Agreement</Button>
       </Box>
     </>
   );
