@@ -60,9 +60,9 @@ const ResultsPage = () => {
         numFleiss={numFleiss}
       />
 
-      <h1 className="mt-3">Your Descriptor Profile by BI-RADS</h1>
+      <h1 className="mt-3">Your Annotation Profile by BI-RADS</h1>
       <div>
-        Explore how your tumour descriptors are distributed across BI-RADS
+        Explore how your tumour annotations are distributed across BI-RADS
         categories, and compare your patterns with the group.
       </div>
       <CalculateStatistics></CalculateStatistics>

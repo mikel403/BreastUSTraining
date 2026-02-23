@@ -44,7 +44,7 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
     "complex cystic and solid",
   ];
   const [EchogenicityValue, setEchogenicityValue] = useState<string | null>(
-    null
+    null,
   );
   const Posterior = [
     "no features",
@@ -59,7 +59,7 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
   // );
   const Calcification = ["no calcifications", "calcifications"];
   const [CalcificationValue, setCalcificationValue] = useState<string | null>(
-    null
+    null,
   );
   const Suggestivity = [
     "simple cyst",
@@ -72,7 +72,7 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
     "fat necrosis",
   ];
   const [SuggestivityValue, setSuggestivityValue] = useState<string | null>(
-    null
+    null,
   );
   const Birads = ["2", "3", "4A", "4B", "4C", "5"];
   const [BiradsValue, setBiradsValue] = useState<string | null>(null);
@@ -146,9 +146,15 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
     <>
       <Center>{full_image && <Image mb={4} src={full_image} />}</Center>
       <Center>{image && <Image mb={4} src={image} />}</Center>
-      <a>
-        It is not compulsory to select an option for every category
-      </a>
+      <div>
+        It is not compulsory to select an option for every category. The
+        platform uses the term “descriptors” to refer to the structured
+        annotation fields. These include standard BI-RADS ultrasound mass
+        descriptors (shape, margin, orientation, echogenicity, and posterior
+        features) as well as additional tumour-related fields (
+        calcifications within a mass and special cases), which are commonly used in clinical
+        reporting but are not part of the BI-RADS mass descriptor lexicon.
+      </div>
       <form onSubmit={handleSubmit}>
         <SimpleGrid columns={3} spacing={10}>
           <div>
@@ -213,7 +219,7 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
           </div> */}
           <div>
             <DescriptorRadioForm
-              heading="Calcifications"
+              heading="Calcifications within mass"
               descriptors={Calcification}
               Value={CalcificationValue}
               setValue={setCalcificationValue}
@@ -290,7 +296,12 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
           Experts
         </Button>
       </Box>
-      {descriptionAI && <a className="text-danger">Unfortunately, the AI was not trained with enough data to give all the descriptors. Your work helps us in this matter</a>}
+      {descriptionAI && (
+        <a className="text-danger">
+          Unfortunately, the AI was not trained with enough data to give all the
+          descriptors. Your work helps us in this matter
+        </a>
+      )}
       <Center>
         <Button
           mt={4}

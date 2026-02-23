@@ -87,8 +87,8 @@ const CalculateStatistics = () => {
         <Box display={"flex"} justifyContent={"space-between"} mt={4}>
           <Box width={"46%"}>
             <FormLabel htmlFor="physicist" className="form-label">
-              The graphs display the distribution of descriptor categories
-              across BI-RADS assessments. Select a normalisation method to
+              The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features)
+              across BI-RADS assessment categories. Select a normalisation method to
               interpret the patterns:
             </FormLabel>
             <div className="form-check">
