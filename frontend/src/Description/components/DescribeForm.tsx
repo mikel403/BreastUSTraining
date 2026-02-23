@@ -33,7 +33,7 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
     "spiculated",
   ];
   const [MarginValue, setMarginValue] = useState<string | null>(null);
-  const Orientation = ["parallel", "no orientation", "not parallel"];
+  const Orientation = ["parallel", "not parallel"];
   const [OrientationValue, setOrientationValue] = useState<string | null>(null);
   const Echogenicity = [
     "anechoic",
