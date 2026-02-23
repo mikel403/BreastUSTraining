@@ -20,9 +20,7 @@ const HomePage = () => {
         In addition to the standard BI-RADS ultrasound descriptors, the platform
         includes a small number of tumour-related fields commonly used in
         clinical reporting (e.g., presence of calcifications within the nodule
-        and selected special-case patterns such as simple cyst). For
-        completeness, the orientation field also includes a “no orientation”
-        option when orientation cannot be assessed or is not applicable. To make
+        and selected special-case patterns such as simple cyst). To make
         the workflow quicker, the platform is designed as a structured,
         test-like annotation process.
       </p>

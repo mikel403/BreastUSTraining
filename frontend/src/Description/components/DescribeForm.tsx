@@ -151,8 +151,8 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
         platform uses the term “descriptors” to refer to the structured
         annotation fields. These include standard BI-RADS ultrasound mass
         descriptors (shape, margin, orientation, echogenicity, and posterior
-        features) as well as additional tumour-related fields (
-        calcifications within a mass and special cases), which are commonly used in clinical
+        features) as well as additional tumour-related fields ( calcifications
+        within a mass and special cases), which are commonly used in clinical
         reporting but are not part of the BI-RADS mass descriptor lexicon.
       </div>
       <form onSubmit={handleSubmit}>
@@ -186,6 +186,15 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               AI_descriptor={descriptionAI ? descriptionAI.orientation : null}
               panelDescriptor={panelResult ? panelResult.orientation : null}
             />
+            {descriptionAI && (
+              <a className="text-danger">
+                The AI was originally trained with an additional “no
+                orientation” output. As the platform now follows the BI-RADS
+                lexicon (parallel / not parallel), this category is not shown,
+                and the remaining probability mass corresponds to non-assessable
+                cases.
+              </a>
+            )}
           </div>
           <div>
             <DescriptorRadioForm
