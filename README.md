@@ -1,6 +1,6 @@
 # BreastUSTraining (v1.1.0)
 
-## AI-Assisted Web Platform for Breast Ultrasound Training and BI-RADS Descriptor Learning
+## A web-based platform for BI-RADS breast ultrasound annotation, expert comparison, and AI-assisted agreement analysis
 
 BreastUSTraining is a modular web-based training platform designed to support radiologists and trainees in learning breast ultrasound interpretation using the BI-RADS lexicon. The system integrates artificial intelligence, expert panel comparison, and statistical feedback to enhance diagnostic training, consistency, and reproducibility.
 
