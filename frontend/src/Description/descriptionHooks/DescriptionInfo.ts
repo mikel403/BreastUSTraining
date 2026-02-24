@@ -24,7 +24,6 @@ interface Margin {
 }
 interface Orientation {
   parallel: number | undefined;
-  "no orientation": number | undefined;
   "not parallel": number | undefined;
   total: number;
 }
