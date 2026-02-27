@@ -20,7 +20,6 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
         if (error) {
           setErrorMessage(error);
         } else {
-          console.log(correlation);
           onCalculate(physician, correlation, num_descriptor);
           setErrorMessage(null);  // Clear error message on successful calculation
         }

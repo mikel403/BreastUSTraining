@@ -1,6 +1,15 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import DescriptorRadioForm from "./DescriptorRadioForm";
-import { Box, Button, Center, Image, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Image,
+  Input,
+  SimpleGrid,
+  VStack,
+  Text,
+} from "@chakra-ui/react";
 import useDescriptionAI from "../descriptionHooks/useDescriptionAI";
 import axios from "../../libs/axios";
 import setDescription from "../descriptionHooks/setDescription";
@@ -9,6 +18,7 @@ import CalculateAIDescription from "../descriptionHooks/CalculateAIDescription";
 import { useNavigate } from "react-router-dom";
 import CalculateExpertPanelDescription from "../descriptionHooks/CalculateExpertPanelDescription";
 import useAuthStore from "../../store/store";
+import CalculateDescriptionRadiologist from "../descriptionHooks/CalculateDescriptionRadiologist";
 
 interface Props {
   id: string;
@@ -110,6 +120,15 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
   //   description
   // );
   const [descriptionAI, setDescriptionAI] = useState<Panel | undefined>();
+  const [descriptionRadiologist, setDescriptionRadiologist] = useState<
+    Panel | undefined
+  >();
+  const [groundTruthPhysician, setGroundTruthPhysician] = useState<
+    string | null
+  >();
+  const [groundTruthPhysicianError, setGroundTruthPhysicianError] = useState<
+    string | null
+  >();
   const [panelResult, setPanelResult] = useState<Panel>();
   const handleExpertPanel = () => {
     CalculateExpertPanelDescription(id.toString(), setPanelResult);
@@ -124,6 +143,27 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
   // const [AIcalcification, setAIcalcification] = useState<string | null>(null);
   // const [AIsuggestivity, setAIsuggestivity] = useState<string | null>(null);
   // const [AIbirads, setAIbirads] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const physicistRef = useRef<HTMLInputElement>(null);
+  const handleDescriptionRadilogist = (event: FormEvent) => {
+    event.preventDefault();
+    if (physicistRef.current) {
+      const physician = physicistRef.current.value;
+      CalculateDescriptionRadiologist(id.toString(), physician).then(
+        ({ DescriptionRadiologist, error }) => {
+          if (error) {
+            setErrorMessage(error);
+          } else {
+            setDescriptionRadiologist(DescriptionRadiologist);
+            setErrorMessage(null); // Clear error message on successful calculation
+          }
+        },
+      );
+    } else {
+      setErrorMessage("Please enter a physician username");
+    }
+  };
+
   const handleAIDescription = () => {
     CalculateAIDescription(id.toString(), setDescriptionAI);
   };
@@ -165,6 +205,9 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setShapeValue}
               AI_descriptor={descriptionAI ? descriptionAI.shape : null}
               panelDescriptor={panelResult ? panelResult.shape : null}
+              radiologistDescriptor={
+                descriptionRadiologist ? descriptionRadiologist.shape : null
+              }
             />
           </div>
           <div>
@@ -175,6 +218,9 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setMarginValue}
               AI_descriptor={descriptionAI ? descriptionAI.margin : null}
               panelDescriptor={panelResult ? panelResult.margin : null}
+              radiologistDescriptor={
+                descriptionRadiologist ? descriptionRadiologist.margin : null
+              }
             />
           </div>
           <div>
@@ -185,9 +231,14 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setOrientationValue}
               AI_descriptor={descriptionAI ? descriptionAI.orientation : null}
               panelDescriptor={panelResult ? panelResult.orientation : null}
+              radiologistDescriptor={
+                descriptionRadiologist
+                  ? descriptionRadiologist.orientation
+                  : null
+              }
             />
             {descriptionAI && (
-              <a className="text-danger">
+              <a style={{ color: "blue" }}>
                 The AI was originally trained with an additional “no
                 orientation” output. As the platform now follows the BI-RADS
                 lexicon (parallel / not parallel), this category is not shown,
@@ -204,6 +255,11 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setEchogenicityValue}
               AI_descriptor={descriptionAI ? descriptionAI.echogenicity : null}
               panelDescriptor={panelResult ? panelResult.echogenicity : null}
+              radiologistDescriptor={
+                descriptionRadiologist
+                  ? descriptionRadiologist.echogenicity
+                  : null
+              }
             />
           </div>
           <div>
@@ -214,6 +270,9 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setPosteriorValue}
               AI_descriptor={descriptionAI ? descriptionAI.posterior : null}
               panelDescriptor={panelResult ? panelResult.posterior : null}
+              radiologistDescriptor={
+                descriptionRadiologist ? descriptionRadiologist.posterior : null
+              }
             />
           </div>
           {/* <div>
@@ -234,6 +293,11 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setCalcificationValue}
               AI_descriptor={descriptionAI ? descriptionAI.calcification : null}
               panelDescriptor={panelResult ? panelResult.calcification : null}
+              radiologistDescriptor={
+                descriptionRadiologist
+                  ? descriptionRadiologist.calcification
+                  : null
+              }
             />
           </div>
           <div>
@@ -244,6 +308,11 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setSuggestivityValue}
               AI_descriptor={descriptionAI ? descriptionAI.suggestivity : null}
               panelDescriptor={panelResult ? panelResult.suggestivity : null}
+              radiologistDescriptor={
+                descriptionRadiologist
+                  ? descriptionRadiologist.suggestivity
+                  : null
+              }
             />
           </div>
           <div>
@@ -254,6 +323,9 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
               setValue={setBiradsValue}
               AI_descriptor={descriptionAI ? descriptionAI.birads : null}
               panelDescriptor={panelResult ? panelResult.birads : null}
+              radiologistDescriptor={
+                descriptionRadiologist ? descriptionRadiologist.birads : null
+              }
             />
           </div>
           <Box
@@ -289,21 +361,70 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
           </Box>
         </SimpleGrid>
       </form>
-      <Box display="flex" justifyContent="space-around" mb={4} mt={4}>
-        <Button
-          onClick={handleAIDescription}
-          isDisabled={!isDescribed}
-          id="normalbutton"
-        >
-          AI description
-        </Button>
-        <Button
-          onClick={handleExpertPanel}
-          isDisabled={!isDescribed}
-          id="normalbutton"
-        >
-          Experts
-        </Button>
+      <Box
+        display="flex"
+        alignItems="stretch"
+        justifyContent="space-between"
+        gap={6}
+        mb={4}
+        mt={10}
+        w="100%"
+      >
+        {/* Columna 1 */}
+        <Box flex="1">
+          <Button
+            onClick={handleAIDescription}
+            isDisabled={!isDescribed}
+            id="normalbutton"
+            w="100%"
+            h="100%"
+            sx={{ width: "100% !important" }}
+          >
+            AI description
+          </Button>
+        </Box>
+
+        {/* Columna 2 */}
+        <Box flex="1">
+          <Button
+            onClick={handleExpertPanel}
+            isDisabled={!isDescribed}
+            id="normalbutton"
+            w="100%"
+            h="100%"
+            sx={{ width: "100% !important" }}
+          >
+            Experts
+          </Button>
+        </Box>
+
+        {/* Columna 3 (User) */}
+        <Box flex="1">
+          <VStack align="stretch" spacing={2} h="100%">
+            <Input
+              ref={physicistRef}
+              id="physicist"
+              type="text"
+              isDisabled={!isDescribed}
+            />
+
+            {errorMessage && (
+              <Box color="red.500" fontSize="sm">
+                {errorMessage}
+              </Box>
+            )}
+
+            <Button
+              onClick={handleDescriptionRadilogist}
+              isDisabled={!isDescribed}
+              id="normalbutton"
+              w="100%"
+              sx={{ width: "100% !important" }}
+            >
+              Selected User
+            </Button>
+          </VStack>
+        </Box>
       </Box>
       {descriptionAI && (
         <a className="text-danger">
