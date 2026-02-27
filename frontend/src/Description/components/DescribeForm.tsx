@@ -19,13 +19,15 @@ import { useNavigate } from "react-router-dom";
 import CalculateExpertPanelDescription from "../descriptionHooks/CalculateExpertPanelDescription";
 import useAuthStore from "../../store/store";
 import CalculateDescriptionRadiologist from "../descriptionHooks/CalculateDescriptionRadiologist";
+import SecureImage from "../../api/SecureImage";
 
 interface Props {
   id: string;
   image: string | null;
   full_image: string | null;
+  isPublic: boolean;
 }
-const DescribeForm = ({ id, image, full_image }: Props) => {
+const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   const username = useAuthStore.getState().username;
   const navigate = useNavigate();
   const [isDescribed, setDescribed] = useState(false);
@@ -184,8 +186,22 @@ const DescribeForm = ({ id, image, full_image }: Props) => {
 
   return (
     <>
-      <Center>{full_image && <Image mb={4} src={full_image} />}</Center>
-      <Center>{image && <Image mb={4} src={image} />}</Center>
+      <Center>
+        {full_image &&
+          (isPublic ? (
+            <Image mb={4} src={full_image} />
+          ) : (
+            <SecureImage boxSize="120px" url={full_image } />
+          ))}
+      </Center>
+      <Center>
+        {image &&
+          (isPublic ? (
+            <Image mb={4} src={image} />
+          ) : (
+            <SecureImage boxSize="120px" url={image} />
+          ))}
+      </Center>
       <div>
         It is not compulsory to select an option for every category. The
         platform uses the term “descriptors” to refer to the structured

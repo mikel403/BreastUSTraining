@@ -11,6 +11,10 @@ export interface Nodule {
     numNodules2Times: number | null;
     numNodulesDescribed:number | null;
     descriptions?:Description[] | null;
+    public_image_url:string | null;
+    public_full_image_url:string | null;
+    private_image_url:string;
+    private_full_image_url:string;
   }
   
   export interface PostQuery {

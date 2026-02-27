@@ -1,6 +1,7 @@
 import { Nodule } from "../noduleHooks/NoduleInfo";
 import { Badge, Box, Card, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import SecureImage from "../../api/SecureImage";
 
 interface Props {
   nodule: Nodule;
@@ -8,6 +9,7 @@ interface Props {
 
 const NoduleDescribedCard = ({ nodule }: Props) => {
   const navigate = useNavigate();
+  const thumb = nodule.public_image_url;
   // const {
   //   data: descriptions,
   //   error,
@@ -37,7 +39,11 @@ const NoduleDescribedCard = ({ nodule }: Props) => {
         })
       }
     >
-      <Image boxSize="120px" src={nodule.image} />
+      {thumb ? (
+      <Image boxSize="120px" src={thumb} />
+      ) : (
+      <SecureImage boxSize="120px" url={nodule.private_image_url} />
+      )}
       <Text>{nodule.name}</Text>
       <Text>{biradsString}</Text>
       {/* <Box>
