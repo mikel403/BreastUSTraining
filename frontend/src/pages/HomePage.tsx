@@ -7,33 +7,36 @@ const HomePage = () => {
     <>
       <h3>Webpage Information</h3>
       <p>
-        This website connects students and expert breast ultrasound radiologists
-        from around the world. Here you can describe tumours using BI-RADS
-        terminology, review your results, and compare your annotations with
-        those of other experts. The descriptions and images you upload are
-        stored and used for research purposes only. You can describe cases from
-        the public dataset or upload your own ultrasound images. The dataset
-        nodules available in the application were obtained from [1].
-        Descriptions follow the BI-RADS 5th edition.
-        <br />
-        <br />
-        In addition to the standard BI-RADS ultrasound descriptors, the platform
-        includes a small number of tumour-related fields commonly used in
-        clinical reporting (e.g., presence of calcifications within the nodule
-        and selected special-case patterns such as simple cyst). To make
-        the workflow quicker, the platform is designed as a structured,
-        test-like annotation process.
+        BreastUSTraining is a web-based platform for practical training and
+        research in structured BI-RADS breast ultrasound annotation. Users can
+        repeatedly describe breast nodules using standardised BI-RADS
+        descriptors, compare their annotations with expert radiologists and AI
+        model outputs, and receive quantitative feedback on intra- and
+        inter-observer agreement (Cohen’s and Fleiss’ kappa). The platform is
+        intended as a reflective annotation and self-assessment tool for
+        radiologists and trainees familiar with the BI-RADS lexicon, and is not
+        designed for diagnostic use.
       </p>
       <p>
-        This website was developed as part of the doctoral thesis of Mikel
-        Carrilero-Mardones, supervised by Jorge Pérez-Martín and Francisco
-        Javier Díez at Universidad Nacional de Educación a Distancia (UNED). The
-        project was supported by grant PID2019-110686RB-I00 (Spanish Government)
-        and grant PEJ-2021-AI/TIC-23268 (Community of Madrid). Ana Delgado
-        Laguna, as an expert radiologist, contributed to the development of the
-        platform by testing the application, models, and user interactions.
-        Special thanks to Manuela Parras Jurado and Dominica Dulnik Bucka for
-        helping to create the initial annotated dataset.
+        Users may describe tumours from a publicly available dataset or upload
+        their own anonymised ultrasound images. Uploaded images are private by
+        default and only visible to the uploading user and system administrators
+        for maintenance and aggregated research purposes. In addition to the
+        standard BI-RADS mass descriptors (shape, margin, orientation, echo
+        pattern, and posterior features), the platform includes a limited number
+        of tumour-related fields commonly used in clinical lesion
+        characterisation (calcifications within the mass and selected special
+        cases).
+      </p>
+      <p>
+        This platform was developed as part of the doctoral thesis of Mikel
+        Carrilero-Mardones at Universidad Nacional de Educación a Distancia
+        (UNED). The initial expert comparison panel was created by three
+        radiologists specialised in breast imaging, with more than 30, 20, and 6
+        years of clinical experience in specialised breast imaging units. Their
+        annotations are provided as a reference panel for comparison and
+        observer variability analysis, rather than as absolute ground truth.
+        Their usernames for comparison are Manuela, Ana and Dominica.
       </p>
       <h3>What's in it for me?</h3>
       <ul>
@@ -80,6 +83,34 @@ const HomePage = () => {
           </ul>
         </li>
       </ul>
+      <h3>Disclaimer and Data Usage</h3>
+      <p>
+        This platform is intended exclusively for research, training, and
+        workflow-oriented annotation practice using the BI-RADS lexicon. It is
+        not a clinical decision-support system and must not be used for
+        diagnostic purposes.
+      </p>
+      <p>
+        Users are solely responsible for the content they upload. Only
+        anonymised ultrasound images that the user is authorised to share should
+        be uploaded. The platform does not require or process
+        patient-identifiable metadata (e.g., DICOM personal information), and
+        users are encouraged to crop images to remove any identifying overlays
+        before saving them.
+      </p>
+      <p>
+        All uploaded images and annotations are private by default and are only
+        visible to the uploading user and the system administrators for
+        maintenance, security, and aggregated research analysis. User-uploaded
+        content is not publicly shared, incorporated into the expert panel, or
+        used as clinical ground truth.
+      </p>
+      <p>
+        The developers assume no responsibility for the content uploaded by
+        users or for any misuse of the platform. By using this website, users
+        agree that they will not upload identifiable patient data or any
+        unlawful, inappropriate, or non-medical content.
+      </p>
       <h3>Contact information</h3>
       This project is still under active development, and we would greatly
       appreciate your feedback. Feel free to contact{" "}
