@@ -44,7 +44,7 @@ function NewImage() {
       CreateNodule(file, setNodule);
     }
 
-    if (isManualCrop && croppedImageUrl.length > 0) {
+    else if (isManualCrop && croppedImageUrl.length > 0) {
       let name = "";
       croppedImageUrl.map((image, index) => {
         if (index === 0) {
@@ -155,7 +155,7 @@ function NewImage() {
           {nodule && (
             <Box>
               {isFullImage && (
-                <DescribeForm id={nodule.id} image={null} full_image={null} />
+                <DescribeForm id={nodule.id} image={null} full_image={null} isPublic={false}/>
               )}
             </Box>
           )}
@@ -166,8 +166,9 @@ function NewImage() {
                   {cropNodules.map((cropNodule) => (
                     <DescribeForm
                       id={cropNodule.id}
-                      image={baseUrl + cropNodule.image}
+                      image={baseUrl + cropNodule.private_image_url}
                       full_image={null}
+                      isPublic={false}
                     />
                   ))}
                 </Box>
