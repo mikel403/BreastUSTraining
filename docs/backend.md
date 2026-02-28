@@ -203,8 +203,9 @@ The backend uses Django’s media storage (`MEDIA_ROOT`) to store:
 - AI-generated description artifacts (`media/ai_descriptions/`)
 - Stored model files (`media/models/`)
 
-User-uploaded nodules are stored server-side and are treated as private content. Access control is enforced through authenticated backend endpoints rather than public file exposure.
+User-uploaded nodules and derived images are stored server-side and treated as private content. Direct public access to the `/media/` directory is disabled at the web server level. Access to private images is enforced through authenticated backend endpoints with permission checks (owner or staff), preventing direct file retrieval via URL.
 
+Images belonging to the public reference dataset are exposed through a restricted public URL namespace (e.g., `/public-media/...`) to enable efficient loading in the interface, while all user-uploaded content remains private by default and is not publicly accessible.
 ---
 
 ## API Responsibilities for the Frontend

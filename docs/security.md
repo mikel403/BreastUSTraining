@@ -2,7 +2,7 @@
 
 ## Scope
 
-BreastUSTraining is a web-based training and research platform for BI-RADS descriptor learning in breast ultrasound. The platform includes authenticated access, protected access to ultrasound images and ROIs, storage of user annotations, and computation of agreement metrics for educational feedback.
+BreastUSTraining is a web-based training and research platform for structured BI-RADS annotation in breast ultrasound. The platform includes authenticated access, protected access to ultrasound images and ROIs, storage of user annotations, and computation of agreement metrics for educational and research feedback.
 
 This document describes the security and privacy mechanisms **as implemented** in the current system (v1.1.0).
 
@@ -133,17 +133,33 @@ This separation preserves the integrity of expert baselines and research analyti
 
 ## Protected Media Access (Ultrasound Images and ROIs)
 
-### Media access model (authenticated backend delivery)
-Ultrasound images, ROIs, and user-uploaded nodules are stored in server-side media storage and are not exposed as public static resources.
+### Media access model (as implemented)
+Ultrasound images, ROIs, and user-uploaded nodules are stored in server-side media storage (`MEDIA_ROOT`) and are **not exposed as public static resources**.
 
 Operational behavior:
-- The frontend requests images and nodules through backend endpoints.
-- The backend verifies authentication before serving media files.
-- Direct anonymous access to protected media is not permitted.
+- Direct public access to the `/media/` directory is disabled at the web server (Apache) level.
+- The frontend does not load sensitive images via public file paths.
+- Protected images are retrieved through authenticated backend endpoints.
+- The backend verifies authentication and ownership permissions before serving media files.
 
-During development (`DEBUG=True`), Django serves media via:
-- `MEDIA_URL` and `MEDIA_ROOT`
-using controlled URL patterns.
+A dedicated frontend utility component (`SecureImage.tsx`) retrieves protected images using authenticated Axios requests (JWT header) and renders them as blob URLs, preventing direct media exposure.
+
+---
+
+## Public Dataset vs Private Media Boundary
+
+The platform differentiates between:
+- Public reference dataset images
+- User-uploaded medical images
+
+Reference dataset images (curated for research and training) may be exposed through a restricted public URL namespace (e.g., `/public-media/...`) to enable efficient interface loading.
+
+In contrast:
+- User-uploaded nodules
+- Uploaded ROIs
+- Derived private case images
+
+are always treated as private content and are only accessible through authenticated API endpoints with permission checks.
 
 ---
 
@@ -153,50 +169,55 @@ using controlled URL patterns.
 The platform stores:
 - User accounts required for authentication
 - BI-RADS descriptor annotations submitted by users
-- User-uploaded nodules (images/ROIs) stored in server-side media storage
-
+- Agreement metrics and longitudinal performance statistics
+- User-uploaded nodules (images/ROIs) in server-side media storage
 
 ### Ownership and access to user-uploaded nodules
 User-uploaded nodules stored in the media storage are treated as **private user-generated content**:
 
 - Each uploaded nodule is associated with the uploading user (owner).
-- Access to these nodules is restricted to the owner through authenticated backend requests.
-- The frontend never accesses media via unrestricted public URLs.
-- The backend enforces authentication and ownership checks before returning the file.
+- Access to these nodules is restricted to the owner and authorized staff through authenticated backend requests.
+- The frontend never accesses private media via unrestricted public URLs.
+- The backend enforces authentication and ownership checks before returning any media file.
 
 ---
 
 ## Privacy Boundary
 
-The platform is designed for training and research use. It does not require patient-identifying information to function.
+The platform is designed for training and research use and does not require patient-identifying information to function.
 
 Ultrasound cases and datasets used within the system are assumed to be:
-- curated for educational or research purposes, and
+- curated for educational or research purposes,
+- anonymised prior to upload, and
 - handled under the policies and ethical approvals of the hosting institution or study protocol.
+
+Users are responsible for ensuring that uploaded images do not contain identifiable patient information.
 
 ---
 
 ## AI Outputs and Safety Boundary
 
-AI outputs (descriptor suggestions, AI comparisons, and expert panel comparisons) are integrated as **assistive educational feedback**.
+AI outputs (descriptor suggestions, AI comparisons, and expert panel comparisons) are integrated as **assistive educational feedback** within the annotation workflow.
 
 The system:
 - does not perform autonomous diagnosis,
 - does not replace clinical judgement,
-- and presents AI results only as training support within the annotation workflow.
+- and presents AI results solely as decision-support and training feedback.
 
 ---
 
 ## Summary
 
 In v1.1.0, BreastUSTraining implements:
-- Djoser-based authentication endpoints
-- SimpleJWT-based JWT authentication for the API
-- JWT header format `Authorization: JWT <token>`
-- Axios interceptor for automatic JWT injection
+- Djoser-based authentication and user management
+- SimpleJWT-based API authentication (`Authorization: JWT <token>`)
+- Centralized Axios interceptor for automatic JWT injection
 - Timer-based token refresh via `/auth/jwt/refresh/`
-- Protected frontend routes using token verification
-- Authenticated backend delivery of ultrasound images and nodules
-- Owner-restricted access to user-uploaded media
-- Server-side enforcement of access control and cohort logic
-- Storage of annotations and statistical metrics for longitudinal training analysis
+- Protected frontend routes with token verification
+- Disabled direct public access to `/media/` at the web server level
+- Authenticated backend delivery of ultrasound images and ROIs
+- Secure blob-based rendering of protected images in the frontend
+- Owner-restricted access to user-uploaded medical media
+- Separation between public reference dataset and private user uploads
+- Server-side enforcement of access control and research cohort integrity
+- Secure storage of annotations and statistical metrics for longitudinal analysis

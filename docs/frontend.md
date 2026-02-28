@@ -42,6 +42,7 @@ Located in `src/api/`, handling authentication and user lifecycle:
 - `resetUsername.ts`
 - `verifyToken.ts`
 - `protectedRoute.tsx` (route-level access protection)
+- `SecureImage.tsx` (utility component for loading protected images via authenticated API requests using JWT and blob URLs, avoiding direct access to media files)
 
 ### Domain Modules
 Each domain contains `components/` and `*Hooks/`:

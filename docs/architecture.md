@@ -37,7 +37,7 @@ The frontend is organized by feature domains. Each domain typically contains:
 High-level structure:
 
 - `src/api/`
-  - Authentication and user lifecycle requests (e.g., login, logout, refresh, register, reset password, token verification)
+  - Authentication and user lifecycle requests (e.g., login, logout, refresh, register, reset password, token verification, media security)
 - `src/libs/`
   - `url.ts`: base URL / API target
   - `axios.ts`: configured Axios instance (injects JWT into requests)
@@ -169,7 +169,8 @@ rather than as an autonomous diagnostic or standalone research inference system.
 ## Persistence Layer (Database + Media)
 
 - Structured entities (users, nodules/cases, annotations, expert references, statistics) are stored in MySQL.
-- Ultrasound images and ROIs are stored in server-side media storage and served through authenticated backend endpoints.
+- User-uploaded ultrasound images and cropped ROIs are stored in server-side media storage and are **not publicly accessible**; they are served exclusively through authenticated backend endpoints with permission checks (owner/staff access).
+- Images from the public reference dataset are served via a **public URL namespace** (e.g., `/public-media/...`) for fast access, while user-uploaded content remains private by default.
 
 ---
 
