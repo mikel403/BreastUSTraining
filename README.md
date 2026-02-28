@@ -141,8 +141,8 @@ and optional cropping of nodules.
 
 The platform follows a descriptor-driven methodology aligned with the
 associated publication for extracting BI-RADS-relevant characteristics
-from ultrasound ROIs, including: - Shape\
-
+from ultrasound ROIs, including: 
+- Shape\
 - Margin\
 - Orientation\
 - Echogenicity\
