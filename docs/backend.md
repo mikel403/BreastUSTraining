@@ -129,7 +129,8 @@ Fields:
 - `image` – cropped/ROI image (`upload_to="nodule/images"`)
 - `full_image` – full ultrasound image (`upload_to="full_nodule/images"`)
 - `new` – User who uploaded the image
-
+- `public` - Permission to make the image public
+- `research` - Permission to use the image for research
 This model supports both database nodules and user-uploaded nodules.
 
 ---

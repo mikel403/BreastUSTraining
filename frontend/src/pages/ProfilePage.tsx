@@ -12,8 +12,6 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { data: user } = useUser();
   const isPhysician = !!user?.is_physician;
-  console.log(isPhysician);
-  console.log(user);
   const { data: physician } = usePhysician({ enabled: isPhysician });
 
   

@@ -2,7 +2,7 @@ import { Nodule } from "../noduleHooks/NoduleInfo";
 import setNodule from "../noduleHooks/setNodule";
 
 
-const CreateNodule = (image: File, returnNodule?:React.Dispatch<React.SetStateAction<Nodule | undefined>>,setCropNodule?:(nodule: Nodule) => void) => {
+const CreateNodule = (image: File, isPublic: Boolean, isResearch: Boolean, returnNodule?:React.Dispatch<React.SetStateAction<Nodule | undefined>>,setCropNodule?:(nodule: Nodule) => void) => {
   const form_data = new FormData();
   form_data.append("image", image, image.name);
   const name = "your_" + image.name.slice(0, -4);

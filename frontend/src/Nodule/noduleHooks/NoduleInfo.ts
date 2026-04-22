@@ -6,6 +6,8 @@ export interface Nodule {
     image: string;
     full_image: string;
     new: string | null;
+    public: string | null;
+    research: string | null;
     numDescriptions: number;
     numNodules: number | null;
     numNodules2Times: number | null;

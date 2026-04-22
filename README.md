@@ -10,7 +10,7 @@ and quantitative evaluation of intra- and inter-observer agreement to
 promote consistent descriptor usage and reproducible annotation
 practices.
 
-This repository contains the full source code for version v1.1.0,
+This repository contains the full source code for version v1.2.0,
 including the Django backend, React frontend, and AI-assisted modules
 for ROI detection, descriptor extraction, and BI-RADS-oriented feedback
 within a research and training workflow.

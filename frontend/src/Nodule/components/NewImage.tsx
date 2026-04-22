@@ -1,21 +1,38 @@
 import React, { useState } from "react";
-import { Box, Input, Image, Button, FormLabel } from "@chakra-ui/react";
+import {
+  Box,
+  Input,
+  Image,
+  Button,
+  FormLabel,
+  VStack,
+  Checkbox,
+  Text,
+  Link,
+} from "@chakra-ui/react";
 import ImageCropping from "./ImageCropping";
 import DescribeForm from "../../Description/components/DescribeForm";
 import CreateNodule from "./CreateNodule";
 import { Nodule } from "../noduleHooks/NoduleInfo";
 import { baseUrl } from "../../libs/url";
 import useAuthStore from "../../store/store";
+import useUser from "../../User/userHooks/useUser";
 
 function NewImage() {
-  const username =useAuthStore.getState().username;
+  const username = useAuthStore.getState().username;
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isFullImage, setFullImage] = useState(true);
   const [isManualCrop, setManualCrop] = useState(false);
   const [nodule, setNodule] = useState<Nodule>();
   const [cropNodules, setCropNodules] = useState<Nodule[]>([]);
 
+  const [isPublic, setIsPublic] = useState(false);
+  const [isResearch, setIsResearch] = useState(false);
+
   const [file, setFile] = useState<File>();
+
+  const { data: user } = useUser();
+  const isPhysician = !!user?.is_physician;
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -39,26 +56,32 @@ function NewImage() {
   };
 
   const handleReadyToDescribe = () => {
-    if(username!="TestUser"){
-    if (isFullImage && file) {
-      CreateNodule(file, setNodule);
+    if (username != "TestUser") {
+      if (isFullImage && file) {
+        CreateNodule(file, isPublic, isResearch, setNodule);
+      } else if (isManualCrop && croppedImageUrl.length > 0) {
+        let name = "";
+        croppedImageUrl.map((image, index) => {
+          if (index === 0) {
+            name = file!.name;
+          } else {
+            name = file!.name.slice(0, -4) + "_" + index + file!.name.slice(-4);
+          }
+          const imageFile = base64toFile(image, name);
+          //
+          const setCropNodule: (nodule: Nodule) => void = (nodule: Nodule) =>
+            setCropNodules((prevNod) => [...prevNod, nodule]);
+          imageFile &&
+            CreateNodule(
+              imageFile,
+              isPublic,
+              isResearch,
+              undefined,
+              setCropNodule,
+            );
+        });
+      }
     }
-
-    else if (isManualCrop && croppedImageUrl.length > 0) {
-      let name = "";
-      croppedImageUrl.map((image, index) => {
-        if (index === 0) {
-          name = file!.name;
-        } else {
-          name = file!.name.slice(0, -4) + "_" + index + file!.name.slice(-4);
-        }
-        const imageFile = base64toFile(image, name);
-        //
-        const setCropNodule: (nodule: Nodule) => void = (nodule: Nodule) =>
-          setCropNodules((prevNod) => [...prevNod, nodule]);
-        imageFile && CreateNodule(imageFile, undefined, setCropNodule);
-      });
-    }}
   };
   function base64toFile(base64Data: string, filename: string): File | null {
     const byteCharacters = atob(base64Data.split(",")[1]);
@@ -72,6 +95,45 @@ function NewImage() {
   }
   return (
     <>
+      <Box mt={4} mb={4}>
+        <Text mb={3}>
+          Uploaded images are private by default and are only accessible to you.
+          They will not be used for any purpose, including research or public
+          sharing, without your explicit consent.
+        </Text>
+
+        <FormLabel mb={2}>
+          If you would like to make your images public or allow their use for
+          research purposes, please select one or both of the options below.
+        </FormLabel>
+        <VStack align="start" spacing={3}>
+          <Checkbox
+            isChecked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+            isDisabled={!isPhysician}
+          >
+            Make uploaded images public
+          </Checkbox>
+
+          <Checkbox
+            isChecked={isResearch}
+            onChange={(e) => setIsResearch(e.target.checked)}
+            isDisabled={!isPhysician}
+          >
+            Allow uploaded images to be used for research purposes
+          </Checkbox>
+        </VStack>
+        {!isPhysician && (
+          <Text fontSize="sm" color="red" mt={2}>
+            Only users with a radiologist profile can enable these options. If
+            you want a radiologist profile contact{" "}
+            <Link href="mailto:mcarrilero@dia.uned.es" color="red">
+              mcarrilero@dia.uned.es
+            </Link>
+            .
+          </Text>
+        )}
+      </Box>
       <Box p={4}>
         <a>
           <strong>Upload an image.</strong> The image will not be saved on this
@@ -146,16 +208,26 @@ function NewImage() {
             If you click on "Save and Describe" only the crops (if you have
             chosen to do so) or the image will be saved to your database. This
             means that you can crop the image to cut out patient information. Be
-            careful, <strong>do not save images with personal information!</strong>
+            careful,{" "}
+            <strong>do not save images with personal information!</strong>
           </a>
-          {username=="TestUser" && <div className="text-danger">As a test user the image will not be saved</div>}
+          {username == "TestUser" && (
+            <div className="text-danger">
+              As a test user the image will not be saved
+            </div>
+          )}
           <Button mt={3} mb={5} onClick={handleReadyToDescribe}>
             Save and Describe
           </Button>
           {nodule && (
             <Box>
               {isFullImage && (
-                <DescribeForm id={nodule.id} image={null} full_image={null} isPublic={false}/>
+                <DescribeForm
+                  id={nodule.id}
+                  image={null}
+                  full_image={null}
+                  isPublic={false}
+                />
               )}
             </Box>
           )}
