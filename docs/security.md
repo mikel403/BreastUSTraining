@@ -195,6 +195,23 @@ Users are responsible for ensuring that uploaded images do not contain identifia
 
 ---
 
+## Controlled Sharing for Research and Public Use
+
+User-uploaded nodules are private by default and are not used for any purpose beyond the individual user's interaction with the platform.
+
+Only users with a radiologist profile are allowed to request that their uploaded images be made publicly available or used for research purposes.
+
+If a radiologist enables either the `public` or `research` flags for an uploaded image, the system requires explicit confirmation via a declaration (`declaration` field). This declaration indicates that the user:
+
+- has the necessary permissions to share the image, and  
+- retains sufficient information to allow the image to be removed upon patient request.
+
+In addition, all such cases are subject to manual verification. Radiologist users who request public or research use of their images are contacted by the system administrators to confirm that appropriate ethical approvals, consent, and institutional permissions are in place.
+
+Until this verification process is completed, images remain treated as private and are not exposed or used for research purposes.
+
+---
+
 ## AI Outputs and Safety Boundary
 
 AI outputs (descriptor suggestions, AI comparisons, and expert panel comparisons) are integrated as **assistive educational feedback** within the annotation workflow.

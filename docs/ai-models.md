@@ -17,7 +17,7 @@ The pipeline starts by detecting nodules and extracting **Regions of Interest (R
 - If the detected ROI width or height is **> 450 pixels**, it is resized while preserving aspect ratio (important for descriptors like orientation).
 - ROIs are then **zero-padded** to **450×450**. :contentReference[oaicite:3]{index=3}
 
-This preprocessing helps remove non-essential image regions and improves downstream descriptor prediction performance. :contentReference[oaicite:4]{index=4}
+This preprocessing helps remove non-essential image regions and accurately detect tumours and surronding features. :contentReference[oaicite:4]{index=4}
 
 ---
 

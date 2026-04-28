@@ -48,12 +48,14 @@ The backend is primarily organized into two main apps:
 The `core` app handles platform-level and user-related logic beyond default Djoser functionality.
 
 Main responsibilities:
+
 - Custom user-related logic
 - Auxiliary endpoints (e.g., password reset integration)
 - Serializers and views related to core platform functionality
 - Admin configuration and basic system models
 
 Key files:
+
 - `core/models.py`
 - `core/serializers.py`
 - `core/views.py`
@@ -67,6 +69,7 @@ Key files:
 The `nodule` app contains the core domain logic of the platform, including nodules, annotations, AI integration, expert panel comparison, and statistics.
 
 Main responsibilities:
+
 - Nodule storage and retrieval
 - BI-RADS descriptor annotations
 - AI-generated descriptions
@@ -75,6 +78,7 @@ Main responsibilities:
 - Image handling and utilities
 
 Key files:
+
 - `nodule/models.py`
 - `nodule/serializers.py`
 - `nodule/views.py`
@@ -106,6 +110,7 @@ These modules decouple heavy logic from API views and improve maintainability an
 Authentication is handled using Djoser with SimpleJWT.
 
 Available endpoints under `/auth/` include:
+
 - `POST /auth/jwt/create/` – Obtain access and refresh tokens (login)
 - `POST /auth/jwt/refresh/` – Refresh access token
 - `POST /auth/jwt/verify/` – Verify token validity
@@ -125,13 +130,15 @@ A custom password reset flow is also exposed through the backend (`/reset-passwo
 Represents an ultrasound case available for description.
 
 Fields:
+
 - `name` – nodule identifier
 - `image` – cropped/ROI image (`upload_to="nodule/images"`)
 - `full_image` – full ultrasound image (`upload_to="full_nodule/images"`)
 - `new` – User who uploaded the image
 - `public` - Permission to make the image public
 - `research` - Permission to use the image for research
-This model supports both database nodules and user-uploaded nodules.
+- `declaration` – Confirms that the uploading radiologist declares having the necessary permissions and information to allow removal of the image if requested by the patient
+  This model supports both database nodules and user-uploaded nodules.
 
 ---
 
@@ -140,14 +147,17 @@ This model supports both database nodules and user-uploaded nodules.
 Represents a BI-RADS annotation for a given nodule.
 
 Relationships:
+
 - `user` (FK to AUTH_USER_MODEL, nullable)
 - `ai` (FK to AI, nullable)
 - `nodule` (FK to Nodule)
 
 A database constraint enforces that exactly one author exists:
+
 - Either a human user OR the AI model (mutually exclusive)
 
 Stored BI-RADS descriptors:
+
 - Shape
 - Margin
 - Orientation (including “no orientation”)
@@ -159,6 +169,7 @@ Stored BI-RADS descriptors:
 - Timestamp (`time`)
 
 Indexes:
+
 - `(user, nodule)`
 - `(ai, nodule)`
 
@@ -171,6 +182,7 @@ These indexes optimize queries for comparisons, statistics, and history retrieva
 Extends the Django user model via a OneToOne relationship.
 
 Fields:
+
 - `experience` (years in breast ultrasound)
 - `profession` (e.g., radiologist)
 
@@ -183,6 +195,7 @@ Used for profile information and research analysis.
 Represents an AI entity that generates automated descriptions.
 
 Field:
+
 - `name` – identifier of the AI model
 
 ---
@@ -206,8 +219,7 @@ The backend uses Django’s media storage (`MEDIA_ROOT`) to store:
 
 User-uploaded nodules and derived images are stored server-side and treated as private content. Direct public access to the `/media/` directory is disabled at the web server level. Access to private images is enforced through authenticated backend endpoints with permission checks (owner or staff), preventing direct file retrieval via URL.
 
-Images belonging to the public reference dataset are exposed through a restricted public URL namespace (e.g., `/public-media/...`) to enable efficient loading in the interface, while all user-uploaded content remains private by default and is not publicly accessible.
----
+## Images belonging to the public reference dataset are exposed through a restricted public URL namespace (e.g., `/public-media/...`) to enable efficient loading in the interface, while all user-uploaded content remains private by default and is not publicly accessible.
 
 ## API Responsibilities for the Frontend
 
@@ -236,6 +248,7 @@ The backend computes and exposes metrics used in the Results page, including:
 - Comparison between user, AI, and expert panel annotations
 
 These computations are implemented primarily in:
+
 - `nodule/utils/statistics.py`
 - `nodule/utils/correlation.py`
 - `nodule/utils/expert_panel.py`
@@ -245,6 +258,7 @@ These computations are implemented primarily in:
 ## Configuration and Environment Management
 
 The project uses a split settings architecture:
+
 - `common.py` for shared settings
 - `dev.py` for development environment
 - `prod.py` for production deployment
