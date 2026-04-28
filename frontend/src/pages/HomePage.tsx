@@ -1,7 +1,10 @@
 import { Box, Link } from "@chakra-ui/react";
 import useAuthStore from "../store/store";
+import useUser from "../User/userHooks/useUser";
 
 const HomePage = () => {
+  const { data: user } = useUser();
+  const isPhysician = !!user?.is_physician;
   const username = useAuthStore.getState().username;
   return (
     <>
@@ -38,6 +41,38 @@ const HomePage = () => {
         observer variability analysis, rather than as absolute ground truth.
         Their usernames for comparison are Manuela, Ana and Dominica.
       </p>
+      {!isPhysician && (
+        <>
+          <h3>Profile</h3>
+          <p>
+            <strong>Registered users</strong> can access all functionalities of
+            the platform, but their annotations are{" "}
+            <strong>not included in the expert panel</strong>. Only{" "}
+            <strong>radiologist users</strong> are considered for expert
+            comparisons.
+            <br />
+            <br />
+            In addition, only <strong>radiologist users</strong> can make their
+            data
+            <strong> public</strong> or available for{" "}
+            <strong>research purposes</strong>.
+            <br />
+            <br />
+            If you are a radiologist and would like to{" "}
+            <strong>contribute to the expert panel</strong>
+            and support this project, please contact{" "}
+            <Link
+              href={`mailto:mcarrilero@dia.uned.es?subject=${encodeURIComponent(
+                "Radiologist user profile",
+              )}`}
+              isExternal
+            >
+              mcarrilero@dia.uned.es
+            </Link>
+            .
+          </p>
+        </>
+      )}
       <h3>What's in it for me?</h3>
       <ul>
         <li>

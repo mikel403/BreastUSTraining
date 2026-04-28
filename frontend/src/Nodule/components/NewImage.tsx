@@ -28,6 +28,9 @@ function NewImage() {
 
   const [isPublic, setIsPublic] = useState(false);
   const [isResearch, setIsResearch] = useState(false);
+  const [isDeclaration, setIsDeclaration] = useState(false);
+  const [imageName, setImageName] = useState("uploaded_nodule");
+  const [nameError, setNameError] = useState("");
 
   const [file, setFile] = useState<File>();
 
@@ -56,31 +59,57 @@ function NewImage() {
   };
 
   const handleReadyToDescribe = () => {
-    if (username != "TestUser") {
-      if (isFullImage && file) {
-        CreateNodule(file, isPublic, isResearch, setNodule);
-      } else if (isManualCrop && croppedImageUrl.length > 0) {
-        let name = "";
-        croppedImageUrl.map((image, index) => {
-          if (index === 0) {
-            name = file!.name;
-          } else {
-            name = file!.name.slice(0, -4) + "_" + index + file!.name.slice(-4);
-          }
-          const imageFile = base64toFile(image, name);
-          //
-          const setCropNodule: (nodule: Nodule) => void = (nodule: Nodule) =>
-            setCropNodules((prevNod) => [...prevNod, nodule]);
-          imageFile &&
-            CreateNodule(
-              imageFile,
-              isPublic,
-              isResearch,
-              undefined,
-              setCropNodule,
-            );
-        });
-      }
+    if (!imageName.trim()) {
+      setNameError("Please enter an image name");
+      return;
+    }
+    setNameError("");
+    if (username === "TestUser") return;
+
+    const cleanImageName = imageName.trim();
+
+    if (isFullImage && file) {
+      CreateNodule(
+        file,
+        isPublic,
+        isResearch,
+        isDeclaration,
+        cleanImageName,
+        setNodule,
+      );
+    } else if (isManualCrop && croppedImageUrl.length > 0 && file) {
+      croppedImageUrl.forEach((image, index) => {
+        // Name shown/stored in your database
+        const noduleName =
+          croppedImageUrl.length > 1
+            ? `${cleanImageName}_${index + 1}`
+            : cleanImageName;
+
+        // File name used internally for the uploaded crop
+        const originalExtension = file.name.includes(".")
+          ? file.name.substring(file.name.lastIndexOf("."))
+          : ".png";
+
+        const imageFile = base64toFile(
+          image,
+          `${noduleName}${originalExtension}`,
+        );
+
+        const setCropNodule = (nodule: Nodule) =>
+          setCropNodules((prevNod) => [...prevNod, nodule]);
+
+        if (imageFile) {
+          CreateNodule(
+            imageFile,
+            isPublic,
+            isResearch,
+            isDeclaration,
+            noduleName,
+            undefined,
+            setCropNodule,
+          );
+        }
+      });
     }
   };
   function base64toFile(base64Data: string, filename: string): File | null {
@@ -103,8 +132,10 @@ function NewImage() {
         </Text>
 
         <FormLabel mb={2}>
-          If you would like to make your images public or allow their use for
-          research purposes, please select one or both of the options below.
+          If you would like to make your images public or allow them to be used
+          for research purposes, please select one or both of the options below.
+          If you select either option, you must confirm that you have the
+          necessary permissions.
         </FormLabel>
         <VStack align="start" spacing={3}>
           <Checkbox
@@ -112,7 +143,7 @@ function NewImage() {
             onChange={(e) => setIsPublic(e.target.checked)}
             isDisabled={!isPhysician}
           >
-            Make uploaded images public
+            Make uploaded images publicly available
           </Checkbox>
 
           <Checkbox
@@ -121,6 +152,15 @@ function NewImage() {
             isDisabled={!isPhysician}
           >
             Allow uploaded images to be used for research purposes
+          </Checkbox>
+          <Checkbox
+            isChecked={isDeclaration}
+            onChange={(e) => setIsDeclaration(e.target.checked)}
+            isDisabled={!isPhysician || !(isPublic || isResearch)}
+          >
+            I confirm that I have the necessary permissions to share these
+            images and, if required, can provide the information needed to allow
+            their removal upon request.
           </Checkbox>
         </VStack>
         {!isPhysician && (
@@ -211,6 +251,22 @@ function NewImage() {
             careful,{" "}
             <strong>do not save images with personal information!</strong>
           </a>
+          <Text mb={2}>
+            Please provide a name for the image. If multiple crops are created,
+            they will be saved as <strong>name_1, name_2, ...</strong>
+          </Text>
+
+          <Input
+            placeholder="Enter image name"
+            value={imageName}
+            onChange={(e) => setImageName(e.target.value)}
+            mb={3}
+          />
+          {nameError && (
+            <Text color="red.500" mb={2}>
+              {nameError}
+            </Text>
+          )}
           {username == "TestUser" && (
             <div className="text-danger">
               As a test user the image will not be saved
