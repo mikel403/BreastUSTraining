@@ -59,8 +59,8 @@ const HomePage = () => {
             <br />
             <br />
             If you are a radiologist and would like to{" "}
-            <strong>contribute to the expert panel</strong>
-            and support this project, please contact{" "}
+            <strong>contribute to the expert panel</strong> and support this
+            project, please contact{" "}
             <Link
               href={`mailto:mcarrilero@dia.uned.es?subject=${encodeURIComponent(
                 "Radiologist user profile",
