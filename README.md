@@ -1,4 +1,4 @@
-# BreastUSTraining (v1.1.0)
+# BreastUSTraining (v1.1.1)
 
 ## A web-based platform for structured BI-RADS breast ultrasound annotation, expert comparison, and AI-assisted agreement analysis
 
@@ -10,7 +10,7 @@ and quantitative evaluation of intra- and inter-observer agreement to
 promote consistent descriptor usage and reproducible annotation
 practices.
 
-This repository contains the full source code for version v1.2.0,
+This repository contains the full source code for version v1.1.1,
 including the Django backend, React frontend, and AI-assisted modules
 for ROI detection, descriptor extraction, and BI-RADS-oriented feedback
 within a research and training workflow.
@@ -141,7 +141,8 @@ and optional cropping of nodules.
 
 The platform follows a descriptor-driven methodology aligned with the
 associated publication for extracting BI-RADS-relevant characteristics
-from ultrasound ROIs, including: 
+from ultrasound ROIs, including:
+
 - Shape\
 - Margin\
 - Orientation\
