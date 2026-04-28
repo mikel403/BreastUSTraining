@@ -9,7 +9,7 @@ export interface Nodule {
     public: boolean | null;
     research: boolean | null;
     declaration: boolean | null;
-    numDescriptions: number | null;
+    numDescriptions: number;
     numNodules: number | null;
     numNodules2Times: number | null;
     numNodulesDescribed:number | null;
