@@ -54,13 +54,13 @@ const DescribeForm = ({
       <h3>{heading}</h3>{" "}
       {panelDescriptor && (
         <div style={{ color: "green" }}>
-          Number of experts for this descriptor {panelDescriptor.total}{" "}
+          Number of experts for this descriptor: {panelDescriptor.total}{" "}
         </div>
       )}
       {radiologistDescriptor && (
         <a style={{ color: "red" }}>
-          Number of times the expert described the nodule{" "}
-          {radiologistDescriptor.total}{" "}
+          Number of times the selected expert gave this descriptor:{" "}
+          {radiologistDescriptor.total}
         </a>
       )}
       {descriptors.map((descriptor) => (
