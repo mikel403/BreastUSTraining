@@ -87,10 +87,11 @@ const NodulesList = ({ described }: Props) => {
             //   timesDesc = event.currentTarget.value;
             // }}
           >
-            <option><TranslationText text={"all"} /></option>
-            <option value="0"><TranslationText text={"never"} /></option>
-            <option value="1"><TranslationText text={"one time"} /></option>
-            <option value="2"><TranslationText text={"several times"} /></option>
+            {/* Native options only render plain text, so they are translated with i18n.t */}
+            <option value="all">{i18n.t("all")}</option>
+            <option value="0">{i18n.t("never")}</option>
+            <option value="1">{i18n.t("one time")}</option>
+            <option value="2">{i18n.t("several times")}</option>
           </Select>
           <Checkbox
             mt={3}
