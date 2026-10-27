@@ -1,6 +1,6 @@
 import i18n from "../../i18n";
 import TranslationText from "../../TranslationText";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import DescriptorRadioForm from "./DescriptorRadioForm";
 import {
   Box,
@@ -10,12 +10,9 @@ import {
   Input,
   SimpleGrid,
   VStack,
-  Text,
 } from "@chakra-ui/react";
-import useDescriptionAI from "../descriptionHooks/useDescriptionAI";
-import axios from "../../libs/axios";
 import setDescription from "../descriptionHooks/setDescription";
-import { Description, Panel } from "../descriptionHooks/DescriptionInfo";
+import { Panel } from "../descriptionHooks/DescriptionInfo";
 import CalculateAIDescription from "../descriptionHooks/CalculateAIDescription";
 import { useNavigate } from "react-router-dom";
 import CalculateExpertPanelDescription from "../descriptionHooks/CalculateExpertPanelDescription";

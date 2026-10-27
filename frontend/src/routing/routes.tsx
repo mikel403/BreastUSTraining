@@ -8,7 +8,6 @@ import Layout from "../NavBar/Layout";
 import DescribedNodulesPage from "../pages/DescribedNodulesPage";
 import CreateNodulePage from "../pages/CreateNodulePage";
 import ResultsPage from "../pages/ResultsPage";
-import NodulesDetailList from "../Description/components/NodulesDetailList";
 import ProfilePage from "../pages/ProfilePage";
 import ChangePasswordPage from "../pages/ChangePasswordPage";
 import ProtectedRoute from "../api/protectedRoute";

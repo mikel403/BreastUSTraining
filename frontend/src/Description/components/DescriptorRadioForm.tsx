@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import TranslationText from "../../TranslationText";
-import { useState } from "react";
 import ProgressBar from "./ProgressBar";
 
 interface Props {

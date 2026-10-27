@@ -1,5 +1,5 @@
 import TranslationText from "../../TranslationText";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import axios from "../../libs/axios";
 import i18n from "../../i18n";
 import {
@@ -207,6 +207,7 @@ const CalculateStatistics = () => {
             <TranslationText text={"The rows represent the categories within each descriptor, and the columns represent the BI-RADS classifications. These tables show how descriptor patterns are distributed across BI-RADS categories."} /> </p>
           {Object.keys(data).map((key) => (
             <StatisticsTable
+              key={key}
               descriptor={key}
               data={data[key as keyof typeof data]}
             />

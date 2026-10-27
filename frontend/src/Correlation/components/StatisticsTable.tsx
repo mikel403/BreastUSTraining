@@ -29,7 +29,7 @@ const StatisticsTable = ({ descriptor, data }: Props) => {
           <Thead>
             <Tr>
               {columns.map((column) => (
-                <Th>
+                <Th key={column}>
                   <b><TranslationText text={column} /></b>
                 </Th>
               ))}
@@ -37,7 +37,7 @@ const StatisticsTable = ({ descriptor, data }: Props) => {
           </Thead>
           <Tbody>
             {Object.keys(data).map((descriptor) => (
-              <Tr>
+              <Tr key={descriptor}>
                 <Th key={"descriptor"}><TranslationText text={descriptor} /></Th>
                 {Object.keys(data[descriptor]).map((birads) => (
                   <Th key={birads}> {data[descriptor][birads]}</Th>

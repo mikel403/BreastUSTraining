@@ -1,6 +1,6 @@
 import TranslationText from "../TranslationText";
-import { FormEvent, useMemo, useRef, useState } from "react";
-import { Box, Button, Center, FormLabel, Input, Link } from "@chakra-ui/react";
+import { FormEvent, useMemo, useState } from "react";
+import { Box, Button, Center, FormLabel, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import usePhysician from "../User/userHooks/usePhysician";
 import setUser from "../User/userHooks/setUser";

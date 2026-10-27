@@ -321,6 +321,7 @@ function NewImage() {
                 <Box>
                   {cropNodules.map((cropNodule) => (
                     <DescribeForm
+                      key={cropNodule.id}
                       id={cropNodule.id}
                       image={baseUrl + cropNodule.private_image_url}
                       full_image={null}

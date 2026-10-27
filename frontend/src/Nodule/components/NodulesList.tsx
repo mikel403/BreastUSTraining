@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import TranslationText from "../../TranslationText";
-import useNodules from "../noduleHooks/useNodules";
 import {
   Box,
   Button,
