@@ -272,7 +272,7 @@ function NewImage() {
             <strong><TranslationText text={"do not save images with personal information!"} /></strong>
           </a>
           <Text mb={2}>
-            <TranslationText text={"Please provide a name for the image. If multiple crops are created, they will be saved as"} /> <strong>name_1, name_2, ...</strong>
+            <TranslationText text={"Please provide a name for the image. If multiple crops are created, they will be saved as"} /> <strong><TranslationText text={"name_1, name_2, ..."} /></strong>
           </Text>
 
           <Input

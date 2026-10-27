@@ -50,7 +50,7 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
           <option value="2">2 or more times</option>
         </Select> */}
         <Button mt={3} onClick={handleSubmit} id={"normalbutton"}><TranslationText text={"Compare Agreement with Another Radiologist (Cohen’s κ)"} /></Button>
-        {errorMessage && <Alert status="error" mt={3}>{errorMessage}</Alert>}
+        {errorMessage && <Alert status="error" mt={3}><TranslationText text={errorMessage} /></Alert>}
       </div>
     </>
   );

@@ -421,7 +421,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
 
             {errorMessage && (
               <Box color="red.500" fontSize="sm">
-                {errorMessage}
+                <TranslationText text={errorMessage} />
               </Box>
             )}
 

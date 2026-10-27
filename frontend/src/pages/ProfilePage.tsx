@@ -185,8 +185,8 @@ const ProfilePage = () => {
               <TranslationText text={"Save Changes"} /> </Button>
 
             <div className="mb-3" style={{ textAlign: "center" }}>
-              {errorMessage && <p className="text-danger">{errorMessage}</p>}
-              {fetchResult && <p className="text-success">{fetchResult}</p>}
+              {errorMessage && <p className="text-danger"><TranslationText text={errorMessage} /></p>}
+              {fetchResult && <p className="text-success"><TranslationText text={fetchResult} /></p>}
             </div>
           </form>
         </div>

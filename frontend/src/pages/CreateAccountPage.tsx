@@ -54,7 +54,7 @@ const CreateAccountPage = () => {
               setError(firstMsg ?? "Invalid data");
             } else setError("There is a mistake in the data, try again");
           } else if (err.request) {
-            setError("Unable to contact the server, try again later");
+            setError("It is not possible to connect to the server, try again later");
           } else {
             setError(err.message);
           }
@@ -104,10 +104,10 @@ const CreateAccountPage = () => {
           <Button mt={6} type="submit">
             <TranslationText text={"Create"} /> </Button>
           <div className="mb-3" style={{ textAlign: "center" }}>
-            {error && <p className="text-danger">{error}</p>}
+            {error && <p className="text-danger"><TranslationText text={error} /></p>}
           </div>
           <div className="mb-3" style={{ textAlign: "center" }}>
-            {success && <p className="text-success">{success}</p>}
+            {success && <p className="text-success"><TranslationText text={success} /></p>}
           </div>
           <Button onClick={() => navigate("/breastultrasound/")}>
             <TranslationText text={"Back to log in page"} /> </Button>

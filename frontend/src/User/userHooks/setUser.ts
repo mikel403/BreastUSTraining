@@ -18,19 +18,21 @@ const setUser = ({ userFile, setFetchResult, setErrorMessage }: Props) => {
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        if (err.response.status === 500) {
-          setErrorMessage(
-            "Parece ser que la contraseña introducida no es válida, pruebe de nuevo. Tenga en cuenta que la contraseña no puede ser muy común, no puede ser similar al usuario, el mínimo de caracteres es de 8 y debe tener números."
-          );
-        } else if (err.response.status === 400) {
-          setErrorMessage(err.response.data.error);
-        }
+        // 400: the first field error (e.g. an invalid email); it is translated when shown
+        const data = err.response.data;
+        const firstKey = data && typeof data === "object" ? Object.keys(data)[0] : null;
+        const firstMsg = firstKey && Array.isArray(data[firstKey]) ? data[firstKey][0] : null;
+        setErrorMessage(
+          err.response.status === 400 && firstMsg
+            ? firstMsg
+            : "The changes could not be saved, please try again"
+        );
       } else if (err.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
         setErrorMessage(
-          "Parece que hay algún problema al conectar con el servidor. Pruebe más tarde"
+          "It is not possible to connect to the server, try again later"
         );
       } else {
         // Something happened in setting up the request that triggered an Error

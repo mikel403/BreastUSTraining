@@ -160,10 +160,14 @@ const CalculateStatistics = () => {
             <Center>
               <h2>
                 <TranslationText text={"Compared with"} />{" "}
-                {physicistRef.current ? physicistRef.current.value : "Overall"}
-                {physicistRef.current?.value === "Overall"
-                  ? ` (experts: ${physicians})`
-                  : ""}
+                {/* "Overall" is the value sent to the backend, only its label is translated */}
+                {!physicistRef.current || physicistRef.current.value === "Overall" ? (
+                  <>
+                    <TranslationText text={"Overall"} /> (<TranslationText text={"experts:"} /> {physicians})
+                  </>
+                ) : (
+                  physicistRef.current.value
+                )}
               </h2>
             </Center>
           </Box>

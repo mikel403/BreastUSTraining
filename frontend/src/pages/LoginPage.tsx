@@ -31,7 +31,7 @@ const LoginPage = () => {
             // The request was made but no response was received
             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
             // http.ClientRequest in node.js
-            setError("Unable to contact with the server, try again later");
+            setError("It is not possible to connect to the server, try again later");
           } else {
             // Something happened in setting up the request that triggered an Error
             setError(err.message);
@@ -89,7 +89,7 @@ const LoginPage = () => {
             <TranslationText text={"Create an account"} /> </Button>
 
           <div className="mb-3" style={{ textAlign: "center" }}>
-            {error && <p className="text-danger">{error}</p>}
+            {error && <p className="text-danger"><TranslationText text={error} /></p>}
           </div>
           {/* <a href="#">Forgot Username / Password?</a>
         <a href="#">Don't have an account? Sign up</a> */}
