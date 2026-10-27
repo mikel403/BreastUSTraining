@@ -234,5 +234,8 @@
   "The password could not be changed, please try again": "No se ha podido cambiar la contraseña, inténtalo de nuevo",
   "It is not possible to connect to the server, try again later": "No es posible conectar con el servidor, inténtalo más tarde",
   "The password has been set correctly": "La contraseña se ha cambiado correctamente",
-  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "La contraseña debe tener al menos 8 caracteres y no puede ser solo numérica, demasiado común ni parecida a tus datos personales"
+  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "La contraseña debe tener al menos 8 caracteres y no puede ser solo numérica, demasiado común ni parecida a tus datos personales",
+  "Only radiologists can make images public or allow their use for research": "Solo los radiólogos pueden hacer públicas las imágenes o permitir su uso en investigación",
+  "You must accept the declaration to make images public or allow their use for research": "Debes aceptar la declaración para hacer públicas las imágenes o permitir su uso en investigación",
+  "The image could not be saved, please try again": "No se ha podido guardar la imagen, inténtalo de nuevo"
 }

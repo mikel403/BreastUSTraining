@@ -234,5 +234,8 @@
   "The password could not be changed, please try again": "The password could not be changed, please try again",
   "It is not possible to connect to the server, try again later": "It is not possible to connect to the server, try again later",
   "The password has been set correctly": "The password has been set correctly",
-  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information"
+  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information",
+  "Only radiologists can make images public or allow their use for research": "Only radiologists can make images public or allow their use for research",
+  "You must accept the declaration to make images public or allow their use for research": "You must accept the declaration to make images public or allow their use for research",
+  "The image could not be saved, please try again": "The image could not be saved, please try again"
 }

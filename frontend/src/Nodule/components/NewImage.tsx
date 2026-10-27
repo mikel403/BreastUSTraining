@@ -34,6 +34,10 @@ function NewImage() {
   const [isDeclaration, setIsDeclaration] = useState(false);
   const [imageName, setImageName] = useState("uploaded_nodule");
   const [nameError, setNameError] = useState("");
+  const [saveError, setSaveError] = useState("");
+  // Saved stays true until the image or the crops change, so repeated clicks do not duplicate nodules
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const [file, setFile] = useState<File>();
 
@@ -44,6 +48,7 @@ function NewImage() {
     const file = event.target.files && event.target.files[0];
     if (file) {
       setFile(file);
+      setIsSaved(false);
       const reader = new FileReader();
 
       reader.onload = (e) => {
@@ -59,6 +64,7 @@ function NewImage() {
 
   const handleCropComplete = (croppedData: string[]) => {
     setcroppedImageUrl(croppedData);
+    setIsSaved(false);
   };
 
   const handleReadyToDescribe = () => {
@@ -67,19 +73,21 @@ function NewImage() {
       return;
     }
     setNameError("");
-    if (username === "TestUser") return;
+    setSaveError("");
+    if (username === "TestUser" || isSaving || isSaved) return;
 
     const cleanImageName = imageName.trim();
+    const uploads: Promise<void>[] = [];
 
     if (isFullImage && file) {
-      CreateNodule(
+      uploads.push(CreateNodule(
         file,
         isPublic,
         isResearch,
         isDeclaration,
         cleanImageName,
         setNodule,
-      );
+      ));
     } else if (isManualCrop && croppedImageUrl.length > 0 && file) {
       croppedImageUrl.forEach((image, index) => {
         // Name shown/stored in your database
@@ -102,7 +110,7 @@ function NewImage() {
           setCropNodules((prevNod) => [...prevNod, nodule]);
 
         if (imageFile) {
-          CreateNodule(
+          uploads.push(CreateNodule(
             imageFile,
             isPublic,
             isResearch,
@@ -110,10 +118,22 @@ function NewImage() {
             noduleName,
             undefined,
             setCropNodule,
-          );
+          ));
         }
       });
     }
+    if (uploads.length === 0) return;
+    setIsSaving(true);
+    Promise.all(uploads)
+      .then(() => setIsSaved(true))
+      .catch((err) => {
+        // The backend rejects sharing without the declaration or without a radiologist profile
+        const detail = err.response?.data?.declaration?.[0];
+        setSaveError(
+          i18n.t(detail ?? "The image could not be saved, please try again"),
+        );
+      })
+      .finally(() => setIsSaving(false));
   };
   function base64toFile(base64Data: string, filename: string): File | null {
     const byteCharacters = atob(base64Data.split(",")[1]);
@@ -136,14 +156,21 @@ function NewImage() {
         <VStack align="start" spacing={3}>
           <Checkbox
             isChecked={isPublic}
-            onChange={(e) => setIsPublic(e.target.checked)}
+            onChange={(e) => {
+              setIsPublic(e.target.checked);
+              // The declaration has to be confirmed again for the new choice
+              if (!e.target.checked) setIsDeclaration(false);
+            }}
             isDisabled={!isPhysician}
           >
             <TranslationText text={"Make uploaded images publicly available"} /> </Checkbox>
 
           <Checkbox
             isChecked={isResearch}
-            onChange={(e) => setIsResearch(e.target.checked)}
+            onChange={(e) => {
+              setIsResearch(e.target.checked);
+              if (!e.target.checked) setIsDeclaration(false);
+            }}
             isDisabled={!isPhysician}
           >
             <TranslationText text={"Allow uploaded images to be used for research purposes"} /> </Checkbox>
@@ -190,6 +217,7 @@ function NewImage() {
                 onClick={() => {
                   setFullImage(true);
                   setManualCrop(false);
+                  setIsSaved(false);
                 }}
                 id="normalbutton"
               >
@@ -201,6 +229,7 @@ function NewImage() {
                 onClick={() => {
                   setFullImage(false);
                   setManualCrop(true);
+                  setIsSaved(false);
                 }}
                 id="normalbutton"
               >
@@ -245,8 +274,19 @@ function NewImage() {
             <div className="text-danger">
               <TranslationText text={"As a test user the image will not be saved"} /> </div>
           )}
-          <Button mt={3} mb={5} onClick={handleReadyToDescribe}>
+          <Button
+            mt={3}
+            mb={5}
+            onClick={handleReadyToDescribe}
+            isLoading={isSaving}
+            isDisabled={isSaved}
+          >
             <TranslationText text={"Save and Describe"} /> </Button>
+          {saveError && (
+            <Text color="red.500" mb={2}>
+              {saveError}
+            </Text>
+          )}
           {nodule && (
             <Box>
               {isFullImage && (
