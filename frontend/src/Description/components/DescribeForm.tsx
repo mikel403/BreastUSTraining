@@ -33,6 +33,8 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   const username = useAuthStore.getState().username;
   const navigate = useNavigate();
   const [isDescribed, setDescribed] = useState(false);
+  const [isSaving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const handleOtherTumour = () => {
     navigate("/breastultrasound/nodules");
   };
@@ -109,10 +111,17 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   // const image=nodule.image
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (username != "TestUser") {
-      setDescription(id, noduledescription);
+    if (username == "TestUser") {
+      setDescribed(true);
+      return;
     }
-    setDescribed(true);
+    // Only mark as saved once the backend has confirmed it
+    setSaving(true);
+    setSaveError(false);
+    setDescription(id, noduledescription)
+      .then(() => setDescribed(true))
+      .catch(() => setSaveError(true))
+      .finally(() => setSaving(false));
   };
   // const {
   //   data: description,
@@ -352,12 +361,17 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
               mt={4}
               colorScheme="teal"
               type="submit"
-              isDisabled={isDescribed}
+              isDisabled={isDescribed || isSaving}
             >
               <TranslationText text={"Submit"} /> </Button>
             {isDescribed && (
               <Box mt={2} color="green">
                 <a> <TranslationText text={"The description has been saved"} /></a>
+              </Box>
+            )}
+            {saveError && (
+              <Box mt={2} color="red.500">
+                <a> <TranslationText text={"The description could not be saved, please try again"} /></a>
               </Box>
             )}
           </Box>

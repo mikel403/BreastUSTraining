@@ -81,6 +81,7 @@
   "As a test user the description will not be saved, but you can click the Submit button to enable the AI and Experts buttons": "As a test user the description will not be saved, but you can click the Submit button to enable the AI and Experts buttons",
   "Submit": "Submit",
   "The description has been saved": "The description has been saved",
+  "The description could not be saved, please try again": "The description could not be saved, please try again",
   "AI description": "AI description",
   "Experts": "Experts",
   "Selected User": "Selected User",

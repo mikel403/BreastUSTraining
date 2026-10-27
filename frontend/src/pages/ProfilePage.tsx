@@ -201,15 +201,6 @@ const ProfilePage = () => {
           }}
         >
           <TranslationText text={"Change password"} /> </Box>
-        <Box
-          className="link"
-          mt={5}
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            navigate("/breastultrasound/change-username");
-          }}
-        >
-          <TranslationText text={"Change username"} /> </Box>
       </Box>
     </>
   );

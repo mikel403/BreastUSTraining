@@ -107,7 +107,7 @@ const DescribeForm = ({
                 color={"#427562"}
                 labelcolor={"white"}
                 total={panelDescriptor["total"]}
-                message={`${panelDescriptor[descriptor] * panelDescriptor["total"]} ${i18n.t("of")} ${panelDescriptor["total"]}`}
+                message={`${Math.round(panelDescriptor[descriptor] * panelDescriptor["total"])} ${i18n.t("of")} ${panelDescriptor["total"]}`}
               />
             )}
             {panelDescriptor &&
@@ -118,7 +118,7 @@ const DescribeForm = ({
                   color={"#86a699"}
                   labelcolor={"black"}
                   total={panelDescriptor["total"]}
-                  message={`${panelDescriptor[descriptor] * panelDescriptor["total"]} ${i18n.t("of")} ${panelDescriptor["total"]}`}
+                  message={`${Math.round(panelDescriptor[descriptor] * panelDescriptor["total"])} ${i18n.t("of")} ${panelDescriptor["total"]}`}
                 />
               )}
 

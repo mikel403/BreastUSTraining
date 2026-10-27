@@ -11,7 +11,6 @@ import ResultsPage from "../pages/ResultsPage";
 import NodulesDetailList from "../Description/components/NodulesDetailList";
 import ProfilePage from "../pages/ProfilePage";
 import ChangePasswordPage from "../pages/ChangePasswordPage";
-import ChangeUserPage from "../pages/ChangeUserPage";
 import ProtectedRoute from "../api/protectedRoute";
 import CreateAccountPage from "../pages/CreateAccountPage";
 
@@ -67,14 +66,6 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ChangePasswordPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "change-username",
-        element: (
-          <ProtectedRoute>
-            <ChangeUserPage />
           </ProtectedRoute>
         ),
       },

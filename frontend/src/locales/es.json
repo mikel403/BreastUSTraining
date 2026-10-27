@@ -81,6 +81,7 @@
   "As a test user the description will not be saved, but you can click the Submit button to enable the AI and Experts buttons": "Como usuario de prueba, la descripción no se guardará, pero puedes pulsar Enviar para habilitar los botones de IA y Expertos.",
   "Submit": "Enviar",
   "The description has been saved": "La descripción se ha guardado",
+  "The description could not be saved, please try again": "No se ha podido guardar la descripción, inténtalo de nuevo",
   "AI description": "Descripción de la IA",
   "Experts": "Expertos",
   "Selected User": "Usuario seleccionado",

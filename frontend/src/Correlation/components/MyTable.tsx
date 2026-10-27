@@ -33,8 +33,14 @@ const MyTable = ({
   fleiss,
   numFleiss,
 }: Props) => {
+  // Fleiss results use the backend field name for "special cases"
+  const fleissKey = (column: string) =>
+    (column === "special cases" ? "suggestivity" : column) as keyof Correlation;
+  // A kappa computed over 0 instances is not defined, so it is not shown as 0
+  const cellValue = (value: number | undefined, num: number | undefined) =>
+    num === 0 ? "–" : value;
   const parenthesisWrap = (wrap: String | number | undefined) => {
-    if (wrap) {
+    if (wrap || wrap === 0) {
       return "(" + wrap + ")";
     } else {
       return "";
@@ -63,7 +69,10 @@ const MyTable = ({
             <Th><TranslationText text={"Intracorrelation"} /></Th>
             {columns.map((column) => (
               <Th key={column}>
-                {intracorrelation?.[column as keyof Correlation]}{" "}
+                {cellValue(
+                  intracorrelation?.[column as keyof Correlation],
+                  numIntracorrelation?.[column as keyof Correlation]
+                )}{" "}
                 {parenthesisWrap(
                   numIntracorrelation?.[column as keyof Correlation]
                 )}
@@ -74,10 +83,11 @@ const MyTable = ({
             <Th><TranslationText text={"Fleiss"} /></Th>
             {columns.map((column) => (
               <Th key={column}>
-                {fleiss?.[column as keyof Correlation]}{" "}
-                {parenthesisWrap(
-                  numFleiss?.[column as keyof Correlation]
-                )}
+                {cellValue(
+                  fleiss?.[fleissKey(column)],
+                  numFleiss?.[fleissKey(column)]
+                )}{" "}
+                {parenthesisWrap(numFleiss?.[fleissKey(column)])}
               </Th>
             ))}
           </Tr>
@@ -87,7 +97,10 @@ const MyTable = ({
                 <Th><TranslationText text={"Intercorrelation"} /> {parenthesisWrap(physician)}</Th>
                 {columns.map((column) => (
                   <Th key={column}>
-                    {correlation[column as keyof Correlation]}{" "}
+                    {cellValue(
+                      correlation[column as keyof Correlation],
+                      numcorrelation[column as keyof Correlation]
+                    )}{" "}
                     {parenthesisWrap(
                       numcorrelation[column as keyof Correlation]
                     )}

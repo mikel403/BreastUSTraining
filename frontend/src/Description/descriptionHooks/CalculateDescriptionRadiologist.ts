@@ -21,7 +21,7 @@ const CalculateDescriptionRadiologist = (
       };
     })
     .catch((error) => {
-      const detail = error.response.data?.detail;
+      const detail = error.response?.data?.detail;
       if (error.response && error.response.status === 404) {
         console.log(error.response);
         if (detail === "physician_not_found") {
