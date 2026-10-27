@@ -221,5 +221,18 @@
   "if you describe the same tumour more than once (with at least a 2-week gap), the results page will show your intraobserver agreement using Cohen’s kappa (how consistent you are with yourself over time).": "si describes el mismo tumor más de una vez (con al menos dos semanas de separación), la página de resultados mostrará tu concordancia intraobservador mediante la kappa de Cohen (tu consistencia a lo largo del tiempo).",
   "The results page will show your agreement with another selected user using Cohen’s kappa. You can also evaluate your impact on team agreement using the difference in Fleiss’ kappa (agreement with the team when your annotations are included versus excluded).": "La página de resultados mostrará tu concordancia con otro usuario mediante la kappa de Cohen. También podrás evaluar tu impacto en la concordancia del equipo a través de la diferencia de kappa de Fleiss (incluyendo o excluyendo tus anotaciones).",
   "you can explore your annotations in structured tables and graphs that summarise how descriptor categories are distributed across BI-RADS assessments.": "podrás explorar tus anotaciones en tablas y gráficos que resumen la distribución de las categorías de descriptores según las evaluaciones BI-RADS.",
-  "Cropped": "Recorte"
+  "Cropped": "Recorte",
+  "Current password": "Contraseña actual",
+  "All fields are required": "Todos los campos son obligatorios",
+  "The current password is not correct": "La contraseña actual no es correcta",
+  "Passwords do not match": "Las contraseñas no coinciden",
+  "The new password must be different from the current one": "La nueva contraseña debe ser distinta de la actual",
+  "The password must contain at least 8 characters": "La contraseña debe tener al menos 8 caracteres",
+  "The password is too common": "La contraseña es demasiado común",
+  "The password can not be entirely numeric": "La contraseña no puede ser solo numérica",
+  "The password is too similar to your personal information": "La contraseña es demasiado parecida a tus datos personales",
+  "The password could not be changed, please try again": "No se ha podido cambiar la contraseña, inténtalo de nuevo",
+  "It is not possible to connect to the server, try again later": "No es posible conectar con el servidor, inténtalo más tarde",
+  "The password has been set correctly": "La contraseña se ha cambiado correctamente",
+  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "La contraseña debe tener al menos 8 caracteres y no puede ser solo numérica, demasiado común ni parecida a tus datos personales"
 }

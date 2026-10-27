@@ -221,5 +221,18 @@
   "Enter image name": "Enter image name",
   "Please enter an image name": "Please enter an image name",
   "Please enter a physician username": "Please enter a physician username",
-  "Cropped": "Cropped"
+  "Cropped": "Cropped",
+  "Current password": "Current password",
+  "All fields are required": "All fields are required",
+  "The current password is not correct": "The current password is not correct",
+  "Passwords do not match": "Passwords do not match",
+  "The new password must be different from the current one": "The new password must be different from the current one",
+  "The password must contain at least 8 characters": "The password must contain at least 8 characters",
+  "The password is too common": "The password is too common",
+  "The password can not be entirely numeric": "The password can not be entirely numeric",
+  "The password is too similar to your personal information": "The password is too similar to your personal information",
+  "The password could not be changed, please try again": "The password could not be changed, please try again",
+  "It is not possible to connect to the server, try again later": "It is not possible to connect to the server, try again later",
+  "The password has been set correctly": "The password has been set correctly",
+  "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information"
 }
