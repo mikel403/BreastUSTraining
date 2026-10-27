@@ -1,6 +1,7 @@
 import TranslationText from "../../TranslationText";
 import React, { useRef, useState } from "react";
 import axios from "../../libs/axios";
+import i18n from "../../i18n";
 import {
   BiradsPanel,
   Panel,
@@ -54,12 +55,23 @@ const CalculateStatistics = () => {
   };
   const handleotherCharts = () => {
     if (physicistRef.current) {
+      setErrorMessage(null);
       axios
         .post<Statistics>("/api/" + physicistRef.current.value + "/statistics")
         .then((res) => {
           setOtherData(res.data.statistics);
           setOtherBiradsData(res.data.statistics_birads);
           setPhysicians(res.data.physicians);
+        })
+        .catch((err) => {
+          // Only radiologists (or "Overall") can be compared
+          setErrorMessage(
+            i18n.t(
+              err.response?.status === 404
+                ? "Radiologist not found"
+                : "It is not possible to connect to the server, try again later",
+            ),
+          );
         });
     }
   };
@@ -130,11 +142,11 @@ const CalculateStatistics = () => {
             <Button mt={3} onClick={handleotherCharts} id={"normalbutton"}>
               <TranslationText text={"Compare"} /> </Button>
           </Box>
-          {/* {errorMessage && (
+          {errorMessage && (
             <Alert status="error" mt={3}>
               {errorMessage}
             </Alert>
-          )} */}
+          )}
         </Box>
       )}
       {data && isChartClick && otherData && (

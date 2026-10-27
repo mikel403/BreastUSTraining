@@ -237,5 +237,9 @@
   "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information",
   "Only radiologists can make images public or allow their use for research": "Only radiologists can make images public or allow their use for research",
   "You must accept the declaration to make images public or allow their use for research": "You must accept the declaration to make images public or allow their use for research",
-  "The image could not be saved, please try again": "The image could not be saved, please try again"
+  "The image could not be saved, please try again": "The image could not be saved, please try again",
+  "Radiologist not found": "Radiologist not found",
+  "Images can not be larger than": "Images can not be larger than",
+  "Too many AI detections, please wait a minute and try again": "Too many AI detections, please wait a minute and try again",
+  "The AI detection could not be done, please try again": "The AI detection could not be done, please try again"
 }

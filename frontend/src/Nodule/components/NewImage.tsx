@@ -16,7 +16,7 @@ import ImageCropping from "./ImageCropping";
 import DescribeForm from "../../Description/components/DescribeForm";
 import CreateNodule from "./CreateNodule";
 import { Nodule } from "../noduleHooks/NoduleInfo";
-import { baseUrl } from "../../libs/url";
+import { baseUrl, maxImageSizeMB } from "../../libs/url";
 import useAuthStore from "../../store/store";
 import useUser from "../../User/userHooks/useUser";
 
@@ -35,6 +35,7 @@ function NewImage() {
   const [imageName, setImageName] = useState("uploaded_nodule");
   const [nameError, setNameError] = useState("");
   const [saveError, setSaveError] = useState("");
+  const [fileError, setFileError] = useState("");
   // Saved stays true until the image or the crops change, so repeated clicks do not duplicate nodules
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -46,6 +47,15 @@ function NewImage() {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
+    setFileError("");
+    // Large images are rejected by the backend, so they are not loaded at all
+    if (file && file.size > maxImageSizeMB * 1024 * 1024) {
+      setFileError(
+        i18n.t("Images can not be larger than") + " " + maxImageSizeMB + " MB",
+      );
+      event.target.value = "";
+      return;
+    }
     if (file) {
       setFile(file);
       setIsSaved(false);
@@ -128,7 +138,8 @@ function NewImage() {
       .then(() => setIsSaved(true))
       .catch((err) => {
         // The backend rejects sharing without the declaration or without a radiologist profile
-        const detail = err.response?.data?.declaration?.[0];
+        const detail =
+          err.response?.data?.declaration?.[0] ?? err.response?.data?.image?.[0];
         setSaveError(
           i18n.t(detail ?? "The image could not be saved, please try again"),
         );
@@ -201,6 +212,11 @@ function NewImage() {
           mt={4}
           mb={4}
         />
+        {fileError && (
+          <Text color="red.500" mb={2}>
+            {fileError}
+          </Text>
+        )}
         {file && (
           <Box>
             <div>

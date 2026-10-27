@@ -237,5 +237,9 @@
   "The password must have at least 8 characters, can not be entirely numeric, too common or similar to your personal information": "La contraseña debe tener al menos 8 caracteres y no puede ser solo numérica, demasiado común ni parecida a tus datos personales",
   "Only radiologists can make images public or allow their use for research": "Solo los radiólogos pueden hacer públicas las imágenes o permitir su uso en investigación",
   "You must accept the declaration to make images public or allow their use for research": "Debes aceptar la declaración para hacer públicas las imágenes o permitir su uso en investigación",
-  "The image could not be saved, please try again": "No se ha podido guardar la imagen, inténtalo de nuevo"
+  "The image could not be saved, please try again": "No se ha podido guardar la imagen, inténtalo de nuevo",
+  "Radiologist not found": "Radiólogo no encontrado",
+  "Images can not be larger than": "Las imágenes no pueden ocupar más de",
+  "Too many AI detections, please wait a minute and try again": "Demasiadas detecciones con IA, espera un minuto e inténtalo de nuevo",
+  "The AI detection could not be done, please try again": "No se ha podido hacer la detección con IA, inténtalo de nuevo"
 }

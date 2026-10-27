@@ -11,6 +11,7 @@ import {
   Image,
   CardBody,
   Center,
+  Text,
 } from "@chakra-ui/react";
 import DetectNodule from "../noduleHooks/DetectNodule";
 
@@ -82,10 +83,25 @@ const ImageCropping = ({ file, imageUrl, onCropComplete }: Props) => {
     return canvas.toDataURL("image/jpeg");
   };
 
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [detectionError, setDetectionError] = useState("");
   const handleAIDetection = () => {
     const form_data = new FormData();
     form_data.append("image", file, file.name);
-    DetectNodule(form_data, setCrops);
+    setDetectionError("");
+    setIsDetecting(true);
+    DetectNodule(form_data, setCrops)
+      .catch((err) => {
+        // 429: the backend limits the AI detections per user and minute
+        setDetectionError(
+          t(
+            err.response?.status === 429
+              ? "Too many AI detections, please wait a minute and try again"
+              : "The AI detection could not be done, please try again",
+          ),
+        );
+      })
+      .finally(() => setIsDetecting(false));
   };
 
   useEffect(() => {
@@ -131,7 +147,12 @@ const ImageCropping = ({ file, imageUrl, onCropComplete }: Props) => {
           ))}
         </Flex>
       )}
-      <Button onClick={handleAIDetection}><TranslationText text={"AI Detection"} /></Button>
+      <Button onClick={handleAIDetection} isLoading={isDetecting}><TranslationText text={"AI Detection"} /></Button>
+      {detectionError && (
+        <Text color="red.500" mt={2}>
+          {detectionError}
+        </Text>
+      )}
     </Box>
   );
 };
