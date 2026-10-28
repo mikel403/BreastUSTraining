@@ -87,7 +87,7 @@
   "Selected User": "Usuario seleccionado",
   "Describe other tumours": "Describir otros tumores",
   "Number of experts for this descriptor:": "Número de expertos que han descrito este descriptor:",
-  "Number of times the selected expert gave this descriptor:": "Número de veces que el experto seleccionado eligió esta categoría:",
+  "Number of times the selected expert gave this descriptor:": "Número de descripciones del experto seleccionado con este descriptor:",
   "Delete crop": "Eliminar recorte",
   "Loading images": "Cargando imágenes",
   "It seems there might be an error. Try to log in again or try later.": "Parece que se ha producido un error. Vuelve a iniciar sesión o inténtalo más tarde.",
