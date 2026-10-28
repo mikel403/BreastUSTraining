@@ -20,7 +20,6 @@ const DescribedNodulesList = ({ username, query, setTotalTumors }: Props) => {
     return <p><TranslationText text={"It seems there might be an error. Try to log in again or try later."} /></p>
   }
   if (!nodules || nodules.length === 0) {
-    console.log("no nodules");
     return <h2><TranslationText text={"There are no nodules"} /></h2>;
   } else {
     const numNodules2Times = nodules[0].numNodules2Times;

@@ -5,7 +5,7 @@ const CalculateAIDescription = (
   nodule_id: string | undefined,
   setDescriptionAI: React.Dispatch<React.SetStateAction<Panel | undefined>>
 ) => {
-  axios
+  return axios
     .post<Panel | undefined>("/api/nodules/" + nodule_id + "/AIDescription")
     .then((res) => setDescriptionAI(res.data));
 };

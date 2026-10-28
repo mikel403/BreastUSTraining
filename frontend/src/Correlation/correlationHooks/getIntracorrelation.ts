@@ -10,7 +10,6 @@ const getIntracorrelation = (
     
   ) => {
     axios.post("/api/intracorrelation").then((res) => {
-      console.log(res.data);
       setIntracorrelation(res.data["correlation"]);
       setNumIntracorrelation(res.data["num_descriptor"]);
     });

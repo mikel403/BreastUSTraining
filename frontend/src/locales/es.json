@@ -269,5 +269,7 @@
   "The password is too similar to the last name.": "La contraseña es demasiado parecida a los apellidos.",
   "Enter a valid email address.": "Introduce un correo electrónico válido.",
   "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.": "Introduce un nombre de usuario válido. Solo puede contener letras, números y los caracteres @/./+/-/_.",
-  "This field may not be blank.": "Este campo no puede estar vacío."
+  "This field may not be blank.": "Este campo no puede estar vacío.",
+  "Too many AI descriptions, please wait a minute and try again": "Demasiadas descripciones con IA, espera un minuto e inténtalo de nuevo",
+  "The AI description could not be obtained, please try again": "No se ha podido obtener la descripción de la IA, inténtalo de nuevo"
 }

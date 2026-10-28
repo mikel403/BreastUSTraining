@@ -174,8 +174,21 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
     }
   };
 
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState("");
   const handleAIDescription = () => {
-    CalculateAIDescription(id.toString(), setDescriptionAI);
+    setAiError("");
+    setIsLoadingAI(true);
+    CalculateAIDescription(id.toString(), setDescriptionAI)
+      .catch((err) => {
+        // 429: the backend limits the AI descriptions per user and minute
+        setAiError(
+          err.response?.status === 429
+            ? "Too many AI descriptions, please wait a minute and try again"
+            : "The AI description could not be obtained, please try again",
+        );
+      })
+      .finally(() => setIsLoadingAI(false));
   };
 
   // const handleAIDescription = () => {
@@ -388,12 +401,18 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           <Button
             onClick={handleAIDescription}
             isDisabled={!isDescribed}
+            isLoading={isLoadingAI}
             id="normalbutton"
             w="100%"
             h="100%"
             sx={{ width: "100% !important" }}
           >
             <TranslationText text={"AI description"} /> </Button>
+          {aiError && (
+            <Box color="red.500" fontSize="sm" mt={2}>
+              <TranslationText text={aiError} />
+            </Box>
+          )}
         </Box>
 
         {/* Columna 2 */}

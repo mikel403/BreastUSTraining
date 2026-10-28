@@ -38,7 +38,6 @@ const setUser = ({ userFile, setFetchResult, setErrorMessage }: Props) => {
         // Something happened in setting up the request that triggered an Error
         setErrorMessage(err.message);
       }
-      console.log(err.config);
     });
 };
 
