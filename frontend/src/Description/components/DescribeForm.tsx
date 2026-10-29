@@ -1,3 +1,5 @@
+import i18n from "../../i18n";
+import TranslationText from "../../TranslationText";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import DescriptorRadioForm from "./DescriptorRadioForm";
 import {
@@ -162,7 +164,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
         },
       );
     } else {
-      setErrorMessage("Please enter a physician username");
+      setErrorMessage(i18n.t("Please enter a physician username"));
     }
   };
 
@@ -203,13 +205,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           ))}
       </Center>
       <div>
-        It is not compulsory to select an option for every category. The
-        platform uses the term “descriptors” to refer to the structured
-        annotation fields. These include standard BI-RADS ultrasound mass
-        descriptors (shape, margin, orientation, echogenicity, and posterior
-        features) as well as additional tumour-related fields ( calcifications
-        within a mass and special cases), which are commonly used in clinical
-        reporting but are not part of the BI-RADS mass descriptor lexicon.
+        <TranslationText text={"It is not compulsory to select an option for every category. The platform uses the term “descriptors” to refer to the structured annotation fields. These include standard BI-RADS ultrasound mass descriptors (shape, margin, orientation, echogenicity, and posterior features) as well as additional tumour-related fields ( calcifications within a mass and special cases), which are commonly used in clinical reporting but are not part of the BI-RADS mass descriptor lexicon."} />
       </div>
       <form onSubmit={handleSubmit}>
         <SimpleGrid columns={3} spacing={10}>
@@ -255,12 +251,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             />
             {descriptionAI && (
               <a style={{ color: "blue" }}>
-                The AI was originally trained with an additional “no
-                orientation” output. As the platform now follows the BI-RADS
-                lexicon (parallel / not parallel), this category is not shown,
-                and the remaining probability mass corresponds to non-assessable
-                cases.
-              </a>
+                <TranslationText text={"The AI was originally trained with an additional “no orientation” output. As the platform now follows the BI-RADS lexicon (parallel / not parallel), this category is not shown, and the remaining probability mass corresponds to non-assessable cases."} /> </a>
             )}
           </div>
           <div>
@@ -352,14 +343,10 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             mt={4}
           >
             <a>
-              Make sure you have correctly selected all the descriptors. Once
-              you have submitted your answer, it can not be changed.
-            </a>
+              <TranslationText text={"Make sure you have correctly selected all the descriptors. Once you have submitted your answer, it can not be changed."} /> </a>
             {username == "TestUser" && (
               <a className="text-danger">
-                As a test user the description will not be saved, but you can
-                click the Submit button to enable the AI and Experts buttons
-              </a>
+                <TranslationText text={"As a test user the description will not be saved, but you can click the Submit button to enable the AI and Experts buttons"} /> </a>
             )}
             <Button
               mt={4}
@@ -367,11 +354,10 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
               type="submit"
               isDisabled={isDescribed}
             >
-              Submit
-            </Button>
+              <TranslationText text={"Submit"} /> </Button>
             {isDescribed && (
               <Box mt={2} color="green">
-                <a> The description has been saved</a>
+                <a> <TranslationText text={"The description has been saved"} /></a>
               </Box>
             )}
           </Box>
@@ -396,8 +382,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             h="100%"
             sx={{ width: "100% !important" }}
           >
-            AI description
-          </Button>
+            <TranslationText text={"AI description"} /> </Button>
         </Box>
 
         {/* Columna 2 */}
@@ -410,8 +395,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             h="100%"
             sx={{ width: "100% !important" }}
           >
-            Experts
-          </Button>
+            <TranslationText text={"Experts"} /> </Button>
         </Box>
 
         {/* Columna 3 (User) */}
@@ -437,16 +421,13 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
               w="100%"
               sx={{ width: "100% !important" }}
             >
-              Selected User
-            </Button>
+              <TranslationText text={"Selected User"} /> </Button>
           </VStack>
         </Box>
       </Box>
       {descriptionAI && (
         <a className="text-danger">
-          Unfortunately, the AI was not trained with enough data to give all the
-          descriptors. Your work helps us in this matter
-        </a>
+          <TranslationText text={"Unfortunately, the AI was not trained with enough data to give all the descriptors. Your work helps us in this matter"} /> </a>
       )}
       <Center>
         <Button
@@ -455,8 +436,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           onClick={handleOtherTumour}
           id={"normalbutton"}
         >
-          Describe other tumours
-        </Button>
+          <TranslationText text={"Describe other tumours"} /> </Button>
       </Center>{" "}
     </>
   );

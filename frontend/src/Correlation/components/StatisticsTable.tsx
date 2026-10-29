@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import {
   ChakraProvider,
   Table,
@@ -23,13 +24,13 @@ const StatisticsTable = ({ descriptor, data }: Props) => {
       <ChakraProvider>
         <Table variant="simple">
           <TableCaption placement="top">
-            <b>Table of {descriptor} grouped by BI-RADS </b>
+            <b><TranslationText text={"Table of"} /> <TranslationText text={descriptor} /> <TranslationText text={"grouped by BI-RADS"} /> </b>
           </TableCaption>
           <Thead>
             <Tr>
               {columns.map((column) => (
                 <Th>
-                  <b>{column}</b>
+                  <b><TranslationText text={column} /></b>
                 </Th>
               ))}
             </Tr>
@@ -37,7 +38,7 @@ const StatisticsTable = ({ descriptor, data }: Props) => {
           <Tbody>
             {Object.keys(data).map((descriptor) => (
               <Tr>
-                <Th key={"descriptor"}>{descriptor}</Th>
+                <Th key={"descriptor"}><TranslationText text={descriptor} /></Th>
                 {Object.keys(data[descriptor]).map((birads) => (
                   <Th key={birads}> {data[descriptor][birads]}</Th>
                 ))}

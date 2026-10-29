@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import TranslationText from "../../TranslationText";
 import { useState, useRef, useEffect } from "react";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const ImageCropping = ({ file, imageUrl, onCropComplete }: Props) => {
+  const { t } = useTranslation();
   const [crop, setCrop] = useState<Crop>({
     unit: "px",
     width: 100,
@@ -106,8 +109,8 @@ const ImageCropping = ({ file, imageUrl, onCropComplete }: Props) => {
         </ReactCrop>
       </Center>
       <Box mt={4} mb={4}>
-        <a>Select a crop with your mouse and click on "Crop Image".</a>
-        <Button onClick={handleDownload}>Crop Image</Button>
+        <a><TranslationText text={"Select a crop with your mouse and click on \"Crop Image\"."} /></a>
+        <Button onClick={handleDownload}><TranslationText text={"Crop Image"} /></Button>
       </Box>
       {croppedImages.length > 0 && (
         <Flex mt={4}>
@@ -115,20 +118,20 @@ const ImageCropping = ({ file, imageUrl, onCropComplete }: Props) => {
             <Card key={index} mr={4} mb={4}>
               <Image
                 src={croppedImage}
-                alt={`Cropped ${index + 1}`}
+                alt={`${t("Cropped")} ${index + 1}`}
                 boxSize="320px"
                 objectFit="contain"
                 // maxW="100%"
                 // maxH="120px"
               />
               <CardBody>
-                <Button onClick={() => deleteCrop(index)}>Delete</Button>
+                <Button onClick={() => deleteCrop(index)}><TranslationText text={"Delete"} /></Button>
               </CardBody>
             </Card>
           ))}
         </Flex>
       )}
-      <Button onClick={handleAIDetection}>AI Detection</Button>
+      <Button onClick={handleAIDetection}><TranslationText text={"AI Detection"} /></Button>
     </Box>
   );
 };

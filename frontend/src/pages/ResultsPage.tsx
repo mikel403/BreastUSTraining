@@ -1,3 +1,4 @@
+import TranslationText from "../TranslationText";
 import { useState } from "react";
 import CalculateIntercorrelation from "../Correlation/components/CalculateIntercorrelation";
 import MyTable from "../Correlation/components/MyTable";
@@ -30,14 +31,9 @@ const ResultsPage = () => {
 
   return (
     <>
-      <h1>Agreement analysis of your descriptions</h1>
+      <h1><TranslationText text={"Agreement analysis of your descriptions"} /></h1>
       <div className="mb-3">
-        In this section, you can evaluate the agreement of your tumour
-        descriptions with other radiologists and with yourself over time. Use
-        the options below to calculate interobserver agreement (Cohen’s kappa),
-        intraobserver agreement, and your impact on team agreement (Δ Fleiss’
-        kappa).
-      </div>
+        <TranslationText text={"In this section, you can evaluate the agreement of your tumour descriptions with other radiologists and with yourself over time. Use the options below to calculate interobserver agreement (Cohen’s kappa), intraobserver agreement, and your impact on team agreement (Δ Fleiss’ kappa)."} /> </div>
 
       <CalculateIntracorrelation
         setIntracorrelation={setIntracorrelation}
@@ -60,11 +56,9 @@ const ResultsPage = () => {
         numFleiss={numFleiss}
       />
 
-      <h1 className="mt-3">Your Annotation Profile by BI-RADS</h1>
+      <h1 className="mt-3"><TranslationText text={"Your Annotation Profile by BI-RADS"} /></h1>
       <div>
-        Explore how your tumour annotations are distributed across BI-RADS
-        categories, and compare your patterns with the group.
-      </div>
+        <TranslationText text={"Explore how your tumour annotations are distributed across BI-RADS categories, and compare your patterns with the group."} /> </div>
       <CalculateStatistics></CalculateStatistics>
     </>
   );

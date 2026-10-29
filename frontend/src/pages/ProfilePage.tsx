@@ -1,3 +1,4 @@
+import TranslationText from "../TranslationText";
 import { FormEvent, useMemo, useRef, useState } from "react";
 import { Box, Button, Center, FormLabel, Input, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -86,7 +87,7 @@ const ProfilePage = () => {
               <Box mr={4} width={350}>
                 <Box display="flex">
                   <FormLabel htmlFor="username" className="form-label">
-                    <a>Username</a>
+                    <a><TranslationText text={"Username"} /></a>
                   </FormLabel>
                 </Box>
                 <Input
@@ -98,8 +99,7 @@ const ProfilePage = () => {
               </Box>
               <Box width={350}>
                 <FormLabel htmlFor="email" className="form-label">
-                  Email
-                </FormLabel>
+                  <TranslationText text={"Email"} /> </FormLabel>
                 <Input
                   mr={3}
                   value={email}
@@ -114,7 +114,7 @@ const ProfilePage = () => {
             <Box mt={4} display="flex">
               <Box mr={4} width={350}>
                 <FormLabel htmlFor="first_name" className="form-label">
-                  <a>Name</a>
+                  <a><TranslationText text={"Name"} /></a>
                 </FormLabel>
                 <Input
                   value={first_name}
@@ -126,7 +126,7 @@ const ProfilePage = () => {
               </Box>
               <Box width={350}>
                 <FormLabel htmlFor="last_name" className="form-label">
-                  <a>Last name</a>
+                  <a><TranslationText text={"Last name"} /></a>
                 </FormLabel>
                 <Input
                   value={last_name}
@@ -144,7 +144,7 @@ const ProfilePage = () => {
                   htmlFor="profession"
                   className="form-label"
                 >
-                  <a>Profession</a>
+                  <a><TranslationText text={"Profession"} /></a>
                 </FormLabel>
                 <Input
                   id="profession"
@@ -157,7 +157,7 @@ const ProfilePage = () => {
               <Box>
                 <Box width={350}>
                   <FormLabel htmlFor="experience" className="form-label">
-                    <a>Experience in breast ultrasound: years</a>
+                    <a><TranslationText text={"Experience in breast ultrasound: years"} /></a>
                   </FormLabel>
                 </Box>
                 <Input
@@ -176,16 +176,13 @@ const ProfilePage = () => {
             </Box>
             {test_username === "TestUser" ? (
               <div className="text-danger">
-                As a test user you can not change the information
-              </div>
+                <TranslationText text={"As a test user you can not change the information"} /> </div>
             ) : !isPhysician ? (
               <div className="text-warning">
-                Only radiologists can fill in profession and experience. If you want a radiologist user contact mcarrilero@dia.uned.es
-              </div>
+                <TranslationText text={"Only radiologists can fill in profession and experience. If you want a radiologist user contact mcarrilero@dia.uned.es"} /> </div>
             ) : null}
             <Button mt={4} type="submit">
-              Save Changes
-            </Button>
+              <TranslationText text={"Save Changes"} /> </Button>
 
             <div className="mb-3" style={{ textAlign: "center" }}>
               {errorMessage && <p className="text-danger">{errorMessage}</p>}
@@ -203,8 +200,7 @@ const ProfilePage = () => {
             navigate("/breastultrasound/change-password");
           }}
         >
-          Change password
-        </Box>
+          <TranslationText text={"Change password"} /> </Box>
         <Box
           className="link"
           mt={5}
@@ -213,8 +209,7 @@ const ProfilePage = () => {
             navigate("/breastultrasound/change-username");
           }}
         >
-          Change username
-        </Box>
+          <TranslationText text={"Change username"} /> </Box>
       </Box>
     </>
   );

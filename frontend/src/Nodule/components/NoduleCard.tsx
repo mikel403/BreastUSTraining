@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import { Nodule } from "../noduleHooks/NoduleInfo";
 import { Badge, Card, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +35,7 @@ const NoduleCard = ({ nodule }: Props) => {
       )}
       
       <Text>{nodule.name}</Text>
-      <Badge bg={color}> Times described {nodule.numDescriptions}</Badge>
+      <Badge bg={color}> <TranslationText text={"Times described"} /> {nodule.numDescriptions}</Badge>
     </Card>
   );
 };

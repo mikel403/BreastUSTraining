@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import { Nodule, PostQuery } from "../noduleHooks/NoduleInfo";
 import { Box, Button, Center, SimpleGrid } from "@chakra-ui/react";
 import NoduleCard from "./NoduleCard";
@@ -20,15 +21,15 @@ const ToDescribeNodulesList = ({
   const { data: nodules, error, isLoading } = useNodules(query);
   const navigate = useNavigate();
   if (isLoading) {
-    return <p>Loading images</p>;
+    return <p><TranslationText text={"Loading images"} /></p>;
   }
   if (error) {
     return (
-      <p>It seems there might be an error. Try to log in again or try later.</p>
+      <p><TranslationText text={"It seems there might be an error. Try to log in again or try later."} /></p>
     );
   }
   if (!nodules || nodules.length === 0) {
-    return <h2>There are no nodules with the given filter</h2>;
+    return <h2><TranslationText text={"There are no nodules with the given filter"} /></h2>;
   } else {
     
     if (random) {
@@ -45,9 +46,9 @@ const ToDescribeNodulesList = ({
     setTotalTumors(totalTumors);
     return (
       <>
-        <h2>Number of nodules to describe with this filter: {numNodules}</h2>
+        <h2><TranslationText text={"Number of nodules to describe with this filter:"} /> {numNodules}</h2>
         <h3>
-          Number of nodules described with this filter: {numNodulesDescribed}
+          <TranslationText text={"Number of nodules described with this filter:"} /> {numNodulesDescribed}
         </h3>
         {/* <h3>Number of nodules described more than one time: {numNodules2times}</h3> */}
         <SimpleGrid

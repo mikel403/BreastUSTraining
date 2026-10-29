@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import React, { useRef, useState } from "react";
 import axios from "../../libs/axios";
 import {
@@ -77,8 +78,7 @@ const CalculateStatistics = () => {
         <AccordionItem>
           <AccordionButton>
             <Box flex="1" textAlign="center">
-              Statistics: graphs
-            </Box>
+              <TranslationText text={"Statistics: graphs"} /> </Box>
             <AccordionIcon />
           </AccordionButton>
         </AccordionItem>
@@ -87,10 +87,7 @@ const CalculateStatistics = () => {
         <Box display={"flex"} justifyContent={"space-between"} mt={4}>
           <Box width={"46%"}>
             <FormLabel htmlFor="physicist" className="form-label">
-              The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features)
-              across BI-RADS assessment categories. Select a normalisation method to
-              interpret the patterns:
-            </FormLabel>
+              <TranslationText text={"The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features) across BI-RADS assessment categories. Select a normalisation method to interpret the patterns:"} /> </FormLabel>
             <div className="form-check">
               <input
                 name={"Normalize by characteristic"}
@@ -103,9 +100,7 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="characNormalize">
-                Descriptor normalisation: shows how BI-RADS varies for each
-                descriptor category. Each line sums to 100%.
-              </label>
+                <TranslationText text={"Descriptor normalisation: shows how BI-RADS varies for each descriptor category. Each line sums to 100%."} /> </label>
             </div>
             <div className="form-check">
               <input
@@ -119,16 +114,12 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="biradsNormalize">
-                BI-RADS normalisation: shows which descriptor categories are
-                most common within each BI-RADS group. Each BI-RADS column sums to 100%.
-              </label>
+                <TranslationText text={"BI-RADS normalisation: shows which descriptor categories are most common within each BI-RADS group. Each BI-RADS column sums to 100%."} /> </label>
             </div>
           </Box>
           <Box width={"46%"}>
             <FormLabel htmlFor="physicist" className="form-label">
-              Compare your patterns with those of other radiologists. “Overall”
-              includes all users except yourself.
-            </FormLabel>
+              <TranslationText text={"Compare your patterns with those of other radiologists. “Overall” includes all users except yourself."} /> </FormLabel>
             <Input
               ref={physicistRef}
               defaultValue={"Overall"}
@@ -137,8 +128,7 @@ const CalculateStatistics = () => {
               className="form-control"
             />
             <Button mt={3} onClick={handleotherCharts} id={"normalbutton"}>
-              Compare
-            </Button>
+              <TranslationText text={"Compare"} /> </Button>
           </Box>
           {/* {errorMessage && (
             <Alert status="error" mt={3}>
@@ -151,13 +141,13 @@ const CalculateStatistics = () => {
         <Box mt={10} display="flex" justifyContent={"space-between"} mb={4}>
           <Box width={"46%"}>
             <Center>
-              <h2>Your graphs</h2>
+              <h2><TranslationText text={"Your graphs"} /></h2>
             </Center>
           </Box>
           <Box width={"46%"}>
             <Center>
               <h2>
-                Compared with{" "}
+                <TranslationText text={"Compared with"} />{" "}
                 {physicistRef.current ? physicistRef.current.value : "Overall"}
                 {physicistRef.current?.value === "Overall"
                   ? ` (experts: ${physicians})`
@@ -193,8 +183,7 @@ const CalculateStatistics = () => {
         <AccordionItem>
           <AccordionButton>
             <Box flex="1" textAlign="center">
-              Statistics: tables
-            </Box>
+              <TranslationText text={"Statistics: tables"} /> </Box>
             <AccordionIcon />
           </AccordionButton>
         </AccordionItem>
@@ -203,10 +192,7 @@ const CalculateStatistics = () => {
       {data && isTableClick && (
         <>
           <p>
-            The rows represent the categories within each descriptor, and the
-            columns represent the BI-RADS classifications. These tables show how
-            descriptor patterns are distributed across BI-RADS categories.
-          </p>
+            <TranslationText text={"The rows represent the categories within each descriptor, and the columns represent the BI-RADS classifications. These tables show how descriptor patterns are distributed across BI-RADS categories."} /> </p>
           {Object.keys(data).map((key) => (
             <StatisticsTable
               descriptor={key}

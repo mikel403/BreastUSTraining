@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import  { Description} from "../descriptionHooks/DescriptionInfo";
 import { Nodule } from "../../Nodule/noduleHooks/NoduleInfo";
 import {Image} from "@chakra-ui/react"
@@ -14,7 +15,7 @@ const DescriptionList = ({descriptions,nodule}:Props) => {
     <ul className="list-group">
       {descriptions?.map((description) => (
         <li key={description.id} className="list-group-item">
-          {description.shape}
+          <TranslationText text={description.shape ?? ""} />
         </li>
       ))}
     </ul>

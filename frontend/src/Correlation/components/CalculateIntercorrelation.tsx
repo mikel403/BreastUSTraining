@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import React, { FormEvent, useRef, useState} from "react";
 import {Correlation} from "../correlationHooks/CorrelationInfo";
 import { Alert, Button, FormLabel, Input, Select } from "@chakra-ui/react";
@@ -30,8 +31,7 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
     <>
       <div className="mb-3">
         <FormLabel htmlFor="physicist" className="form-label">
-          Search for a radiologist and evaluate your agreement using Cohen's kappa.
-        </FormLabel>
+          <TranslationText text={"Search for a radiologist and evaluate your agreement using Cohen's kappa."} /> </FormLabel>
         <Input
           ref={physicistRef}
           id="physicist"
@@ -49,7 +49,7 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
           <option value="1">1 time</option>
           <option value="2">2 or more times</option>
         </Select> */}
-        <Button mt={3} onClick={handleSubmit} id={"normalbutton"}>Compare Agreement with Another Radiologist (Cohen’s κ)</Button>
+        <Button mt={3} onClick={handleSubmit} id={"normalbutton"}><TranslationText text={"Compare Agreement with Another Radiologist (Cohen’s κ)"} /></Button>
         {errorMessage && <Alert status="error" mt={3}>{errorMessage}</Alert>}
       </div>
     </>

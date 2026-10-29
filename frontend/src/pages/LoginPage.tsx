@@ -1,3 +1,4 @@
+import TranslationText from "../TranslationText";
 import { FormEvent, useRef, useState } from "react";
 import loginRequest from "../api/loginRequest";
 import { Box, Button, FormLabel, Input, Divider } from "@chakra-ui/react";
@@ -42,12 +43,11 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
-      <h1 className="login-title">Breast Ultrasound Imaging SharePage</h1>
+      <h1 className="login-title"><TranslationText text={"Breast Ultrasound Imaging SharePage"} /></h1>
       <Box id="main">
         <Button onClick={() => login("TestUser", "TestUserPassword")}>
           {" "}
-          Log in as a test user
-        </Button>
+          <TranslationText text={"Log in as a test user"} /> </Button>
         <Divider
           width="100%"
           mx="auto"
@@ -58,8 +58,7 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-3 mt-3">
             <FormLabel htmlFor="username" className="form-label">
-              User
-            </FormLabel>
+              <TranslationText text={"User"} /> </FormLabel>
             <Input
               ref={usernameref}
               id="username"
@@ -69,8 +68,7 @@ const LoginPage = () => {
           </div>
           <div className="mb-3">
             <FormLabel htmlFor="password" className="form-label">
-              Password
-            </FormLabel>
+              <TranslationText text={"Password"} /> </FormLabel>
             <Input
               ref={passwordref}
               id="password"
@@ -80,8 +78,7 @@ const LoginPage = () => {
           </div>
 
           <Button mt={6} type="submit">
-            Log in
-          </Button>
+            <TranslationText text={"Log in"} /> </Button>
 
           <Button
             mt={3}
@@ -89,8 +86,7 @@ const LoginPage = () => {
             colorScheme="teal"
             onClick={() => navigate("/breastultrasound/register")}
           >
-            Create an account
-          </Button>
+            <TranslationText text={"Create an account"} /> </Button>
 
           <div className="mb-3" style={{ textAlign: "center" }}>
             {error && <p className="text-danger">{error}</p>}
