@@ -25,6 +25,7 @@ load_dotenv(BASE_DIR / ".env")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    "rangefilter",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -32,13 +33,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "djoser",
-    "debug_toolbar",
     "nodule",
     "corsheaders",
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -50,12 +49,6 @@ MIDDLEWARE = [
 ]
 
 
-
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
 
 ROOT_URLCONF = "WebApp.urls"
 
@@ -86,11 +79,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    
+    #YOLO detection and the description model run synchronously, so each user can only request a few per minute
+    'DEFAULT_THROTTLE_RATES': {
+        'ai_detection': '10/min',
+        'ai_description': '10/min',
+    },
 }
 
 SIMPLE_JWT = {
-    'ACCES_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'AUTH_HEADER_TYPES': ('JWT',),
    
 }
@@ -118,7 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+#Dates are stored in UTC and shown in Spanish time
+TIME_ZONE = "Europe/Madrid"
 
 USE_I18N = True
 
@@ -137,6 +135,9 @@ MEDIA_ROOT= os.path.join(BASE_DIR, "media")
 
 
 PUBLIC_MEDIA_URL = "/public-media/"
+
+#Maximum size of uploaded images (nodules and AI detection); keep it in sync with frontend/src/libs/url.ts
+MAX_UPLOAD_IMAGE_SIZE_MB = 10
 PUBLIC_MEDIA_ROOT = BASE_DIR / "public-media" 
 
 # Default primary key field type
@@ -152,6 +153,14 @@ DJOSER= {
         "user_create":"core.serializers.UserCreateSerializer",
         "user":"core.serializers.UserSerializer",
         "current_user":"core.serializers.UserSerializer",
-    }
+    },
+    #The username identifies the owner of the uploaded nodules, so users can not change it
+    "PERMISSIONS":{
+        "set_username":["rest_framework.permissions.IsAdminUser"],
+        #The shared test user can read its profile but not change it or delete it
+        "user":["djoser.permissions.CurrentUserOrAdmin","core.permissions.ReadOnlyForTestUser"],
+        "user_delete":["djoser.permissions.CurrentUserOrAdmin","core.permissions.ReadOnlyForTestUser"],
+        "set_password":["djoser.permissions.CurrentUserOrAdmin","core.permissions.ReadOnlyForTestUser"],
+    },
 }
 

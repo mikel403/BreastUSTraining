@@ -1,3 +1,5 @@
+import i18n from "../../i18n";
+import TranslationText from "../../TranslationText";
 // LineChart.tsx
 import React from "react";
 import { Line } from "react-chartjs-2";
@@ -47,7 +49,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, title, totalDesc,pointData 
             const labelcarac = tooltipItem.dataset.label;
             const labelbirads = tooltipItem.label;
             if (labelcarac){const additionalData = pointData[labelcarac][labelbirads]
-              return additionalData !== undefined ? `Total: ${additionalData}` : '';
+              return additionalData !== undefined ? `${i18n.t("Total:")} ${additionalData}` : '';
             };
           },
         },
@@ -67,10 +69,10 @@ const LineChart: React.FC<LineChartProps> = ({ data, title, totalDesc,pointData 
       {/* Assign an id to the container for the chart */}
       {/* <Box display={"flex"} justifyContent={"space-evenly"}> */}
       <Center>
-        <h3>{titleCap}</h3>
+        <h3><TranslationText text={titleCap.toLowerCase()} /></h3>
         </Center>
         <Center>
-        <p>(Number of descriptions: {totalDesc}) </p>
+        <p><TranslationText text={"(Number of descriptions:"} /> {totalDesc}) </p>
         </Center>
         
       {/* </Box> */}

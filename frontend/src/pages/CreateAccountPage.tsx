@@ -1,3 +1,4 @@
+import TranslationText from "../TranslationText";
 import { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import registerRequest from "../api/registerRequest";
@@ -53,7 +54,7 @@ const CreateAccountPage = () => {
               setError(firstMsg ?? "Invalid data");
             } else setError("There is a mistake in the data, try again");
           } else if (err.request) {
-            setError("Unable to contact the server, try again later");
+            setError("It is not possible to connect to the server, try again later");
           } else {
             setError(err.message);
           }
@@ -65,18 +66,13 @@ const CreateAccountPage = () => {
     
     <div className="login-container">
       <div style={{ width: "60%", margin: "0 auto" }}>
-        You are registering as a normal user. You will be able to access every
-        element of the web page; however, you will not be considered in the expert panel when other users compare their descriptions. If you want to log in as a
-        radiologist and help the project with your descriptions, contact
-        mcarrilero@dia.uned.es.
-      </div>
-      <h1 className="login-title">Create your account</h1>
+        <TranslationText text={"You are registering as a normal user. You will be able to access every element of the web page; however, you will not be considered in the expert panel when other users compare their descriptions. If you want to log in as a radiologist and help the project with your descriptions, contact mcarrilero@dia.uned.es."} /> </div>
+      <h1 className="login-title"><TranslationText text={"Create your account"} /></h1>
       <Box id="main">
         <form onSubmit={handleSubmit}>
           <div className="mb-3 mt-3">
             <FormLabel htmlFor="username" className="form-label">
-              User
-            </FormLabel>
+              <TranslationText text={"User"} /> </FormLabel>
             <Input
               ref={usernameref}
               id="username"
@@ -86,8 +82,7 @@ const CreateAccountPage = () => {
           </div>
           <div className="mb-3">
             <FormLabel htmlFor="password" className="form-label">
-              Password
-            </FormLabel>
+              <TranslationText text={"Password"} /> </FormLabel>
             <Input
               ref={passwordref}
               id="password"
@@ -97,8 +92,7 @@ const CreateAccountPage = () => {
           </div>
           <div className="mb-3">
             <FormLabel htmlFor="repeat-password" className="form-label">
-              Repeat password
-            </FormLabel>
+              <TranslationText text={"Repeat password"} /> </FormLabel>
             <Input
               ref={repeatPasswordref}
               id="repeat-password"
@@ -108,17 +102,15 @@ const CreateAccountPage = () => {
           </div>
 
           <Button mt={6} type="submit">
-            Create
-          </Button>
+            <TranslationText text={"Create"} /> </Button>
           <div className="mb-3" style={{ textAlign: "center" }}>
-            {error && <p className="text-danger">{error}</p>}
+            {error && <p className="text-danger"><TranslationText text={error} /></p>}
           </div>
           <div className="mb-3" style={{ textAlign: "center" }}>
-            {success && <p className="text-success">{success}</p>}
+            {success && <p className="text-success"><TranslationText text={success} /></p>}
           </div>
           <Button onClick={() => navigate("/breastultrasound/")}>
-            Back to log in page
-          </Button>
+            <TranslationText text={"Back to log in page"} /> </Button>
           {/* <a href="#">Forgot Username / Password?</a>
         <a href="#">Don't have an account? Sign up</a> */}
         </form>

@@ -1,4 +1,6 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import i18n from "../../i18n";
+import TranslationText from "../../TranslationText";
+import { FormEvent, useRef, useState } from "react";
 import DescriptorRadioForm from "./DescriptorRadioForm";
 import {
   Box,
@@ -8,12 +10,9 @@ import {
   Input,
   SimpleGrid,
   VStack,
-  Text,
 } from "@chakra-ui/react";
-import useDescriptionAI from "../descriptionHooks/useDescriptionAI";
-import axios from "../../libs/axios";
 import setDescription from "../descriptionHooks/setDescription";
-import { Description, Panel } from "../descriptionHooks/DescriptionInfo";
+import { Panel } from "../descriptionHooks/DescriptionInfo";
 import CalculateAIDescription from "../descriptionHooks/CalculateAIDescription";
 import { useNavigate } from "react-router-dom";
 import CalculateExpertPanelDescription from "../descriptionHooks/CalculateExpertPanelDescription";
@@ -31,6 +30,8 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   const username = useAuthStore.getState().username;
   const navigate = useNavigate();
   const [isDescribed, setDescribed] = useState(false);
+  const [isSaving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const handleOtherTumour = () => {
     navigate("/breastultrasound/nodules");
   };
@@ -107,10 +108,17 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   // const image=nodule.image
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (username != "TestUser") {
-      setDescription(id, noduledescription);
+    if (username == "TestUser") {
+      setDescribed(true);
+      return;
     }
-    setDescribed(true);
+    // Only mark as saved once the backend has confirmed it
+    setSaving(true);
+    setSaveError(false);
+    setDescription(id, noduledescription)
+      .then(() => setDescribed(true))
+      .catch(() => setSaveError(true))
+      .finally(() => setSaving(false));
   };
   // const {
   //   data: description,
@@ -146,11 +154,11 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   // const [AIsuggestivity, setAIsuggestivity] = useState<string | null>(null);
   // const [AIbirads, setAIbirads] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const physicistRef = useRef<HTMLInputElement>(null);
+  const physicianRef = useRef<HTMLInputElement>(null);
   const handleDescriptionRadilogist = (event: FormEvent) => {
     event.preventDefault();
-    if (physicistRef.current) {
-      const physician = physicistRef.current.value;
+    if (physicianRef.current) {
+      const physician = physicianRef.current.value;
       CalculateDescriptionRadiologist(id.toString(), physician).then(
         ({ DescriptionRadiologist, error }) => {
           if (error) {
@@ -162,12 +170,25 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
         },
       );
     } else {
-      setErrorMessage("Please enter a physician username");
+      setErrorMessage(i18n.t("Please enter a physician username"));
     }
   };
 
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState("");
   const handleAIDescription = () => {
-    CalculateAIDescription(id.toString(), setDescriptionAI);
+    setAiError("");
+    setIsLoadingAI(true);
+    CalculateAIDescription(id.toString(), setDescriptionAI)
+      .catch((err) => {
+        // 429: the backend limits the AI descriptions per user and minute
+        setAiError(
+          err.response?.status === 429
+            ? "Too many AI descriptions, please wait a minute and try again"
+            : "The AI description could not be obtained, please try again",
+        );
+      })
+      .finally(() => setIsLoadingAI(false));
   };
 
   // const handleAIDescription = () => {
@@ -203,13 +224,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           ))}
       </Center>
       <div>
-        It is not compulsory to select an option for every category. The
-        platform uses the term “descriptors” to refer to the structured
-        annotation fields. These include standard BI-RADS ultrasound mass
-        descriptors (shape, margin, orientation, echogenicity, and posterior
-        features) as well as additional tumour-related fields ( calcifications
-        within a mass and special cases), which are commonly used in clinical
-        reporting but are not part of the BI-RADS mass descriptor lexicon.
+        <TranslationText text={"It is not compulsory to select an option for every category. The platform uses the term “descriptors” to refer to the structured annotation fields. These include standard BI-RADS ultrasound mass descriptors (shape, margin, orientation, echogenicity, and posterior features) as well as additional tumour-related fields ( calcifications within a mass and special cases), which are commonly used in clinical reporting but are not part of the BI-RADS mass descriptor lexicon."} />
       </div>
       <form onSubmit={handleSubmit}>
         <SimpleGrid columns={3} spacing={10}>
@@ -255,12 +270,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             />
             {descriptionAI && (
               <a style={{ color: "blue" }}>
-                The AI was originally trained with an additional “no
-                orientation” output. As the platform now follows the BI-RADS
-                lexicon (parallel / not parallel), this category is not shown,
-                and the remaining probability mass corresponds to non-assessable
-                cases.
-              </a>
+                <TranslationText text={"The AI was originally trained with an additional “no orientation” output. As the platform now follows the BI-RADS lexicon (parallel / not parallel), this category is not shown, and the remaining probability mass corresponds to non-assessable cases."} /> </a>
             )}
           </div>
           <div>
@@ -352,26 +362,26 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             mt={4}
           >
             <a>
-              Make sure you have correctly selected all the descriptors. Once
-              you have submitted your answer, it can not be changed.
-            </a>
+              <TranslationText text={"Make sure you have correctly selected all the descriptors. Once you have submitted your answer, it can not be changed."} /> </a>
             {username == "TestUser" && (
               <a className="text-danger">
-                As a test user the description will not be saved, but you can
-                click the Submit button to enable the AI and Experts buttons
-              </a>
+                <TranslationText text={"As a test user the description will not be saved, but you can click the Submit button to enable the AI and Experts buttons"} /> </a>
             )}
             <Button
               mt={4}
               colorScheme="teal"
               type="submit"
-              isDisabled={isDescribed}
+              isDisabled={isDescribed || isSaving}
             >
-              Submit
-            </Button>
+              <TranslationText text={"Submit"} /> </Button>
             {isDescribed && (
               <Box mt={2} color="green">
-                <a> The description has been saved</a>
+                <a> <TranslationText text={"The description has been saved"} /></a>
+              </Box>
+            )}
+            {saveError && (
+              <Box mt={2} color="red.500">
+                <a> <TranslationText text={"The description could not be saved, please try again"} /></a>
               </Box>
             )}
           </Box>
@@ -391,13 +401,18 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           <Button
             onClick={handleAIDescription}
             isDisabled={!isDescribed}
+            isLoading={isLoadingAI}
             id="normalbutton"
             w="100%"
             h="100%"
             sx={{ width: "100% !important" }}
           >
-            AI description
-          </Button>
+            <TranslationText text={"AI description"} /> </Button>
+          {aiError && (
+            <Box color="red.500" fontSize="sm" mt={2}>
+              <TranslationText text={aiError} />
+            </Box>
+          )}
         </Box>
 
         {/* Columna 2 */}
@@ -410,23 +425,22 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
             h="100%"
             sx={{ width: "100% !important" }}
           >
-            Experts
-          </Button>
+            <TranslationText text={"Experts"} /> </Button>
         </Box>
 
         {/* Columna 3 (User) */}
         <Box flex="1">
           <VStack align="stretch" spacing={2} h="100%">
             <Input
-              ref={physicistRef}
-              id="physicist"
+              ref={physicianRef}
+              id="physician"
               type="text"
               isDisabled={!isDescribed}
             />
 
             {errorMessage && (
               <Box color="red.500" fontSize="sm">
-                {errorMessage}
+                <TranslationText text={errorMessage} />
               </Box>
             )}
 
@@ -437,16 +451,13 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
               w="100%"
               sx={{ width: "100% !important" }}
             >
-              Selected User
-            </Button>
+              <TranslationText text={"Selected User"} /> </Button>
           </VStack>
         </Box>
       </Box>
       {descriptionAI && (
         <a className="text-danger">
-          Unfortunately, the AI was not trained with enough data to give all the
-          descriptors. Your work helps us in this matter
-        </a>
+          <TranslationText text={"Unfortunately, the AI was not trained with enough data to give all the descriptors. Your work helps us in this matter"} /> </a>
       )}
       <Center>
         <Button
@@ -455,8 +466,7 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
           onClick={handleOtherTumour}
           id={"normalbutton"}
         >
-          Describe other tumours
-        </Button>
+          <TranslationText text={"Describe other tumours"} /> </Button>
       </Center>{" "}
     </>
   );

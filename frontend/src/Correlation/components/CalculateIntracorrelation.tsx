@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import React, { FormEvent} from "react";
 import { Correlation} from "../correlationHooks/CorrelationInfo";
 import { Box, Button} from "@chakra-ui/react";
@@ -20,8 +21,8 @@ const CalculateIntracorrelation = ({ setIntracorrelation,setNumIntracorrelation 
   return (
     <>
       <Box className="mb-3">
-        <p>Evaluate your intraobserver agreement (consistency over time when describing the same tumour).</p>
-        <Button onClick={handleSubmit} id={"normalbutton"}>Calculate Intraobserver Agreement</Button>
+        <p><TranslationText text={"Evaluate your intraobserver agreement (consistency over time when describing the same tumour)."} /></p>
+        <Button onClick={handleSubmit} id={"normalbutton"}><TranslationText text={"Calculate Intraobserver Agreement"} /></Button>
       </Box>
     </>
   );

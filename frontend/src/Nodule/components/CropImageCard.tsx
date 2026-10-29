@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 
 import { Button, Card, Image } from "@chakra-ui/react";
 import { useState } from "react";
@@ -14,7 +15,7 @@ const CropImageCard = ({ croppedImage }: Props) => {
   return (
     <Card>
       <Image boxSize='120px' src={croppedImage} maxW="100%" maxH="200px"/>
-      <Button onClick={()=>setDeleted(true)}>Delete crop</Button>
+      <Button onClick={()=>setDeleted(true)}><TranslationText text={"Delete crop"} /></Button>
     </Card>
   );
   }

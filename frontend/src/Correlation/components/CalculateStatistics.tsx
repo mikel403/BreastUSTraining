@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
+import TranslationText from "../../TranslationText";
+import { useRef, useState } from "react";
 import axios from "../../libs/axios";
+import i18n from "../../i18n";
 import {
   BiradsPanel,
   Panel,
@@ -28,7 +30,7 @@ const CalculateStatistics = () => {
   const [physicians, setPhysicians] = useState<number>();
   const [isChartClick, setChartClick] = useState(false);
   const [isTableClick, setTableClick] = useState(false);
-  const physicistRef = useRef<HTMLInputElement>(null);
+  const physicianRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [characNormalize, setCharacNormalize] = useState<boolean>(false);
@@ -52,13 +54,24 @@ const CalculateStatistics = () => {
     setChartClick(!isChartClick);
   };
   const handleotherCharts = () => {
-    if (physicistRef.current) {
+    if (physicianRef.current) {
+      setErrorMessage(null);
       axios
-        .post<Statistics>("/api/" + physicistRef.current.value + "/statistics")
+        .post<Statistics>("/api/" + physicianRef.current.value + "/statistics")
         .then((res) => {
           setOtherData(res.data.statistics);
           setOtherBiradsData(res.data.statistics_birads);
           setPhysicians(res.data.physicians);
+        })
+        .catch((err) => {
+          // Only radiologists (or "Overall") can be compared
+          setErrorMessage(
+            i18n.t(
+              err.response?.status === 404
+                ? "Radiologist not found"
+                : "It is not possible to connect to the server, try again later",
+            ),
+          );
         });
     }
   };
@@ -77,8 +90,7 @@ const CalculateStatistics = () => {
         <AccordionItem>
           <AccordionButton>
             <Box flex="1" textAlign="center">
-              Statistics: graphs
-            </Box>
+              <TranslationText text={"Statistics: graphs"} /> </Box>
             <AccordionIcon />
           </AccordionButton>
         </AccordionItem>
@@ -86,11 +98,8 @@ const CalculateStatistics = () => {
       {data && isChartClick && (
         <Box display={"flex"} justifyContent={"space-between"} mt={4}>
           <Box width={"46%"}>
-            <FormLabel htmlFor="physicist" className="form-label">
-              The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features)
-              across BI-RADS assessment categories. Select a normalisation method to
-              interpret the patterns:
-            </FormLabel>
+            <FormLabel htmlFor="physician" className="form-label">
+              <TranslationText text={"The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features) across BI-RADS assessment categories. Select a normalisation method to interpret the patterns:"} /> </FormLabel>
             <div className="form-check">
               <input
                 name={"Normalize by characteristic"}
@@ -103,9 +112,7 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="characNormalize">
-                Descriptor normalisation: shows how BI-RADS varies for each
-                descriptor category. Each line sums to 100%.
-              </label>
+                <TranslationText text={"Descriptor normalisation: shows how BI-RADS varies for each descriptor category. Each line sums to 100%."} /> </label>
             </div>
             <div className="form-check">
               <input
@@ -119,49 +126,48 @@ const CalculateStatistics = () => {
                 onChange={onClick}
               />
               <label className="form-check-label" htmlFor="biradsNormalize">
-                BI-RADS normalisation: shows which descriptor categories are
-                most common within each BI-RADS group. Each BI-RADS column sums to 100%.
-              </label>
+                <TranslationText text={"BI-RADS normalisation: shows which descriptor categories are most common within each BI-RADS group. Each BI-RADS column sums to 100%."} /> </label>
             </div>
           </Box>
           <Box width={"46%"}>
-            <FormLabel htmlFor="physicist" className="form-label">
-              Compare your patterns with those of other radiologists. “Overall”
-              includes all users except yourself.
-            </FormLabel>
+            <FormLabel htmlFor="physician" className="form-label">
+              <TranslationText text={"Compare your patterns with those of other radiologists. “Overall” includes all users except yourself."} /> </FormLabel>
             <Input
-              ref={physicistRef}
+              ref={physicianRef}
               defaultValue={"Overall"}
-              id="physicist"
+              id="physician"
               type="text"
               className="form-control"
             />
             <Button mt={3} onClick={handleotherCharts} id={"normalbutton"}>
-              Compare
-            </Button>
+              <TranslationText text={"Compare"} /> </Button>
           </Box>
-          {/* {errorMessage && (
+          {errorMessage && (
             <Alert status="error" mt={3}>
               {errorMessage}
             </Alert>
-          )} */}
+          )}
         </Box>
       )}
       {data && isChartClick && otherData && (
         <Box mt={10} display="flex" justifyContent={"space-between"} mb={4}>
           <Box width={"46%"}>
             <Center>
-              <h2>Your graphs</h2>
+              <h2><TranslationText text={"Your graphs"} /></h2>
             </Center>
           </Box>
           <Box width={"46%"}>
             <Center>
               <h2>
-                Compared with{" "}
-                {physicistRef.current ? physicistRef.current.value : "Overall"}
-                {physicistRef.current?.value === "Overall"
-                  ? ` (experts: ${physicians})`
-                  : ""}
+                <TranslationText text={"Compared with"} />{" "}
+                {/* "Overall" is the value sent to the backend, only its label is translated */}
+                {!physicianRef.current || physicianRef.current.value === "Overall" ? (
+                  <>
+                    <TranslationText text={"Overall"} /> (<TranslationText text={"experts:"} /> {physicians})
+                  </>
+                ) : (
+                  physicianRef.current.value
+                )}
               </h2>
             </Center>
           </Box>
@@ -193,8 +199,7 @@ const CalculateStatistics = () => {
         <AccordionItem>
           <AccordionButton>
             <Box flex="1" textAlign="center">
-              Statistics: tables
-            </Box>
+              <TranslationText text={"Statistics: tables"} /> </Box>
             <AccordionIcon />
           </AccordionButton>
         </AccordionItem>
@@ -203,12 +208,10 @@ const CalculateStatistics = () => {
       {data && isTableClick && (
         <>
           <p>
-            The rows represent the categories within each descriptor, and the
-            columns represent the BI-RADS classifications. These tables show how
-            descriptor patterns are distributed across BI-RADS categories.
-          </p>
+            <TranslationText text={"The rows represent the categories within each descriptor, and the columns represent the BI-RADS classifications. These tables show how descriptor patterns are distributed across BI-RADS categories."} /> </p>
           {Object.keys(data).map((key) => (
             <StatisticsTable
+              key={key}
               descriptor={key}
               data={data[key as keyof typeof data]}
             />

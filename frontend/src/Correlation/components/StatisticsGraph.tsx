@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 
 import { Box, Center, ChakraProvider } from '@chakra-ui/react';
 import LineChart from './LineChart';
@@ -23,6 +24,7 @@ interface Props{
 //   }
 
 const StatisticsGraph = ({data,descriptor,birads_data,characNormalize}:Props) => {
+    const { i18n } = useTranslation();
     if (descriptor==="birads"){return null}
     if (descriptor==="suggestivity")descriptor="special cases";
     const datasets=[];
@@ -35,11 +37,11 @@ const StatisticsGraph = ({data,descriptor,birads_data,characNormalize}:Props) =>
           continue;
         };
         const total:number=data[carac]["total"]
-        pointData[carac] = data[carac];
+        pointData[i18n.t(carac)] = data[carac];
         totalDesc+=total;
         let dictionary={label:"",data:[] as number[],fill:false,borderColor:""}
         if (characNormalize){dictionary = {
-          label: carac,
+          label: i18n.t(carac),
           data: [
             data[carac]["2"] / total,
             data[carac]["3"] / total,
@@ -53,7 +55,7 @@ const StatisticsGraph = ({data,descriptor,birads_data,characNormalize}:Props) =>
         };}
         
         else{dictionary = {
-          label: carac,
+          label: i18n.t(carac),
           data: [
             data[carac]["2"] / birads_data["2"],
             data[carac]["3"] / birads_data["3"],

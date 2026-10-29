@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import { Table, Thead, Tbody, Tr, Th, TableCaption } from "@chakra-ui/react";
 import {
   Correlation,
@@ -32,8 +33,14 @@ const MyTable = ({
   fleiss,
   numFleiss,
 }: Props) => {
+  // Fleiss results use the backend field name for "special cases"
+  const fleissKey = (column: string) =>
+    (column === "special cases" ? "suggestivity" : column) as keyof Correlation;
+  // A kappa computed over 0 instances is not defined, so it is not shown as 0
+  const cellValue = (value: number | undefined, num: number | undefined) =>
+    num === 0 ? "–" : value;
   const parenthesisWrap = (wrap: String | number | undefined) => {
-    if (wrap) {
+    if (wrap || wrap === 0) {
       return "(" + wrap + ")";
     } else {
       return "";
@@ -42,30 +49,30 @@ const MyTable = ({
   return (
     <>
       <p>
-        In brackets is the number of instances for which the kappa was
-        calculated. Only nodes for which both raters (experts) give a descriptor
-        are considered
-      </p>
+        <TranslationText text={"In brackets is the number of instances for which the kappa was calculated. Only nodes for which both raters (experts) give a descriptor are considered"} /> </p>
       <Table variant="simple" mb={3}>
         <TableCaption placement="top">
-          <b>Correlation</b>
+          <b><TranslationText text={"Correlation"} /></b>
         </TableCaption>
         <Thead>
           <Tr>
             <Th></Th>
             {columns.map((column) => (
               <Th key={column}>
-                <b>{column}</b>
+                <b><TranslationText text={column} /></b>
               </Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Th>Intracorrelation</Th>
+            <Th><TranslationText text={"Intracorrelation"} /></Th>
             {columns.map((column) => (
               <Th key={column}>
-                {intracorrelation?.[column as keyof Correlation]}{" "}
+                {cellValue(
+                  intracorrelation?.[column as keyof Correlation],
+                  numIntracorrelation?.[column as keyof Correlation]
+                )}{" "}
                 {parenthesisWrap(
                   numIntracorrelation?.[column as keyof Correlation]
                 )}
@@ -73,23 +80,27 @@ const MyTable = ({
             ))}
           </Tr>
           <Tr>
-            <Th>Fleiss</Th>
+            <Th><TranslationText text={"Fleiss"} /></Th>
             {columns.map((column) => (
               <Th key={column}>
-                {fleiss?.[column as keyof Correlation]}{" "}
-                {parenthesisWrap(
-                  numFleiss?.[column as keyof Correlation]
-                )}
+                {cellValue(
+                  fleiss?.[fleissKey(column)],
+                  numFleiss?.[fleissKey(column)]
+                )}{" "}
+                {parenthesisWrap(numFleiss?.[fleissKey(column)])}
               </Th>
             ))}
           </Tr>
           {intercorrelations.map(
             ({ physician, correlation, numcorrelation }, index) => (
               <Tr key={index}>
-                <Th>Intercorrelation {parenthesisWrap(physician)}</Th>
+                <Th><TranslationText text={"Intercorrelation"} /> {parenthesisWrap(physician)}</Th>
                 {columns.map((column) => (
                   <Th key={column}>
-                    {correlation[column as keyof Correlation]}{" "}
+                    {cellValue(
+                      correlation[column as keyof Correlation],
+                      numcorrelation[column as keyof Correlation]
+                    )}{" "}
                     {parenthesisWrap(
                       numcorrelation[column as keyof Correlation]
                     )}

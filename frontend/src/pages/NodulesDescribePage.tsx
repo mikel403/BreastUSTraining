@@ -4,15 +4,14 @@ import { Nodule } from "../Nodule/noduleHooks/NoduleInfo";
 import { baseUrl } from "../libs/url";
 
 const NodulesDescribePage = () => {
+  // Hooks must be called on every render, so the location is read before any condition
+  const nodule = useLocation().state?.nodule as Nodule | undefined;
   let id = "0";
   let image = "";
   let full_image = "";
   let isPublic = false;
-  if (useLocation().state) {
-    const nodule = useLocation().state.nodule as Nodule;
+  if (nodule) {
     isPublic = !!nodule.public_image_url;
-    
-    console.log(nodule.private_image_url);
     id = nodule.id;
 
     image = nodule.public_image_url

@@ -16,6 +16,6 @@ const CreateNodule = (
   form_data.append("public",String(isPublic));
   form_data.append("research",String(isResearch));
   form_data.append("declaration",String(isDeclaration));
-  setNodule(form_data, returnNodule, setCropNodule);
+  return setNodule(form_data, returnNodule, setCropNodule);
 };
 export default CreateNodule;

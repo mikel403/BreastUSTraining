@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import TranslationText from "../../TranslationText";
 import ProgressBar from "./ProgressBar";
 
 interface Props {
@@ -19,6 +20,7 @@ const DescribeForm = ({
   Value,
   setValue,
 }: Props) => {
+  const { i18n } = useTranslation();
   const onClick = (event: any) => {
     Value === event.target.value
       ? setValue(null)
@@ -51,15 +53,15 @@ const DescribeForm = ({
   }
   return (
     <>
-      <h3>{heading}</h3>{" "}
+      <h3><TranslationText text={heading} /></h3>{" "}
       {panelDescriptor && (
         <div style={{ color: "green" }}>
-          Number of experts for this descriptor: {panelDescriptor.total}{" "}
+          <TranslationText text={"Number of experts for this descriptor:"} /> {panelDescriptor.total}{" "}
         </div>
       )}
       {radiologistDescriptor && (
         <a style={{ color: "red" }}>
-          Number of times the selected expert gave this descriptor:{" "}
+          <TranslationText text={"Number of times the selected expert gave this descriptor:"} />{" "}
           {radiologistDescriptor.total}
         </a>
       )}
@@ -76,7 +78,7 @@ const DescribeForm = ({
               onClick={onClick}
               onChange={onClick}
             />
-            {descriptor}
+            <TranslationText text={descriptor} />
 
             {AI_descriptor && AI_descriptor[descriptor] == max_ai && (
               <ProgressBar
@@ -104,7 +106,7 @@ const DescribeForm = ({
                 color={"#427562"}
                 labelcolor={"white"}
                 total={panelDescriptor["total"]}
-                message={`${panelDescriptor[descriptor] * panelDescriptor["total"]} of ${panelDescriptor["total"]}`}
+                message={`${Math.round(panelDescriptor[descriptor] * panelDescriptor["total"])} ${i18n.t("of")} ${panelDescriptor["total"]}`}
               />
             )}
             {panelDescriptor &&
@@ -115,7 +117,7 @@ const DescribeForm = ({
                   color={"#86a699"}
                   labelcolor={"black"}
                   total={panelDescriptor["total"]}
-                  message={`${panelDescriptor[descriptor] * panelDescriptor["total"]} of ${panelDescriptor["total"]}`}
+                  message={`${Math.round(panelDescriptor[descriptor] * panelDescriptor["total"])} ${i18n.t("of")} ${panelDescriptor["total"]}`}
                 />
               )}
 
@@ -129,7 +131,7 @@ const DescribeForm = ({
                   message={`${Math.round(
                     radiologistDescriptor[descriptor] *
                       radiologistDescriptor["total"],
-                  )} of ${radiologistDescriptor["total"]}`}
+                  )} ${i18n.t("of")} ${radiologistDescriptor["total"]}`}
                 />
               )}
 
@@ -144,7 +146,7 @@ const DescribeForm = ({
                   message={`${Math.round(
                     radiologistDescriptor[descriptor] *
                       radiologistDescriptor["total"],
-                  )} of ${radiologistDescriptor["total"]}`}
+                  )} ${i18n.t("of")} ${radiologistDescriptor["total"]}`}
                 />
               )}
           </label>

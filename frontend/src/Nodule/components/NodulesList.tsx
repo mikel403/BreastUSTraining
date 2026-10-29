@@ -1,4 +1,5 @@
-import useNodules from "../noduleHooks/useNodules";
+import { useTranslation } from "react-i18next";
+import TranslationText from "../../TranslationText";
 import {
   Box,
   Button,
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const NodulesList = ({ described }: Props) => {
+  const { i18n } = useTranslation();
   const pageSize = 45;
   const [page, setPage] = useState(1);
   const [randomTumour, setRandomTumour] = useState(false);
@@ -62,39 +64,33 @@ const NodulesList = ({ described }: Props) => {
       <form onSubmit={handleSubmit}>
         {!described && (
           <p>
-            These are the nodules you can describe. You can apply a filter to
-            find nodules by name, number of times you have described them, or to get the
-            nodules you have uploaded. Select a nodule and click on it to start describing it. Remember that you can describe a nodule more than
-            once.
-          </p>
+            <TranslationText text={"These are the nodules you can describe. You can apply a filter to find nodules by name, number of times you have described them, or to get the nodules you have uploaded. Select a nodule and click on it to start describing it. Remember that you can describe a nodule more than once."} /> </p>
         )}
         {described && (
           <p>
-            These are all the nodules you have described so far. The BI-RADS you
-            gave for each nodule is shown. You can select one to see your
-            descriptions.
-          </p>
+            <TranslationText text={"These are all the nodules you have described so far. The BI-RADS you gave for each nodule is shown. You can select one to see your descriptions."} /> </p>
         )}
         <Box>
           <Input
             ref={nameref}
             type="text"
-            placeholder="Find nodule by name"
+            placeholder={i18n.t("Find nodule by name")}
             // onChange={(event) => {
             //   name = event.currentTarget.value;
             // }}
           ></Input>
-          <FormLabel mt={3}>Times described</FormLabel>
+          <FormLabel mt={3}><TranslationText text={"Times described"} /></FormLabel>
           <Select
             ref={timesDescribedref}
             // onChange={(event) => {
             //   timesDesc = event.currentTarget.value;
             // }}
           >
-            <option>all</option>
-            <option value="0">never</option>
-            <option value="1">one time</option>
-            <option value="2">several times</option>
+            {/* Native options only render plain text, so they are translated with i18n.t */}
+            <option value="all">{i18n.t("all")}</option>
+            <option value="0">{i18n.t("never")}</option>
+            <option value="1">{i18n.t("one time")}</option>
+            <option value="2">{i18n.t("several times")}</option>
           </Select>
           <Checkbox
             mt={3}
@@ -103,18 +99,16 @@ const NodulesList = ({ described }: Props) => {
             //   yourData = event.target.checked;
             // }}
           >
-            Show only the images you uploaded{" "}
+            <TranslationText text={"Show only the images you uploaded"} />{" "}
           </Checkbox>
         </Box>
         <Box mt={3} mb={3} display="flex" justifyContent="space-between">
           <Button id={"normalbutton"} type="submit">
             {" "}
-            Search
-          </Button>
+            <TranslationText text={"Search"} /> </Button>
           <Button id={"normalbutton"} onClick={handleRandomTumour}>
             {" "}
-            Describe a random tumour
-          </Button>
+            <TranslationText text={"Describe a random tumour"} /> </Button>
         </Box>
       </form>
       {!described && (
@@ -142,11 +136,10 @@ const NodulesList = ({ described }: Props) => {
           onClick={() => setPage(page - 1)}
           id={"normalbutton"}
         >
-          Previous
-        </Button>
+          <TranslationText text={"Previous"} /> </Button>
         <Center>
           <strong>
-            showing from {1 + page * pageSize - pageSize} until{" "}
+            <TranslationText text={"showing from"} /> {1 + page * pageSize - pageSize} <TranslationText text={"until"} />{" "}
             {Math.min(page * pageSize, totalTumors)}
           </strong>
         </Center>
@@ -157,8 +150,7 @@ const NodulesList = ({ described }: Props) => {
           onClick={() => setPage(page + 1)}
           id={"normalbutton"}
         >
-          Next
-        </Button>
+          <TranslationText text={"Next"} /> </Button>
       </Box>
     </>
   );

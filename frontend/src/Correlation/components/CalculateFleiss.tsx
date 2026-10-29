@@ -1,3 +1,4 @@
+import TranslationText from "../../TranslationText";
 import React, { FormEvent } from "react";
 import { Correlation } from "../correlationHooks/CorrelationInfo";
 import { Box, Button } from "@chakra-ui/react";
@@ -16,14 +17,10 @@ const CalculateIntracorrelation = ({ setFleiss, setNumFleiss }: Props) => {
     <>
       <Box className="mb-3">
         <p>
-          Evaluate how your annotations affect the overall agreement of the
-          radiologist team. This metric shows the change in team agreement (Δ
-          Fleiss’ kappa) when your descriptions are included versus
-          excluded.{" "}
+          <TranslationText text={"Evaluate how your annotations affect the overall agreement of the radiologist team. This metric shows the change in team agreement (Δ Fleiss’ kappa) when your descriptions are included versus excluded."} />{" "}
         </p>
         <Button onClick={handleSubmit} id={"normalbutton"}>
-          Your Impact on Team Agreement (Δ Fleiss’ κ)
-        </Button>
+          <TranslationText text={"Your Impact on Team Agreement (Δ Fleiss’ κ)"} /> </Button>
       </Box>
     </>
   );

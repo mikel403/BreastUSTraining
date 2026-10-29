@@ -1,22 +1,24 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
 from . import models
+from .validators import validate_image_size
 
 
     
-class PhysicistSerializer(serializers.ModelSerializer):
+class PhysicianSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model=models.Physicist
+        model=models.Physician
         fields=["user_id","experience","profession"] 
 
     
     def create(self,validated_data):
         user_id=self.context["user_id"]
-        return models.Physicist.objects.create(user_id=user_id, **validated_data)
+        return models.Physician.objects.create(user_id=user_id, **validated_data)
 
-class NodulePhysicistSerializer(serializers.ModelSerializer):
+class NodulePhysicianSerializer(serializers.ModelSerializer):
     new=serializers.StringRelatedField(read_only=True)
     full_image=serializers.ImageField(read_only=True)
     numDescriptions=serializers.IntegerField(read_only=True)
@@ -30,11 +32,25 @@ class NodulePhysicistSerializer(serializers.ModelSerializer):
     class Meta:
          model=models.Nodule
          fields=["id","name", "public", "research", "declaration", "image","full_image","new","numDescriptions","numNodules","numNodules2Times","numNodulesDescribed","public_image_url","public_full_image_url","private_image_url","private_full_image_url"]
+    def validate_image(self, value):
+        try:
+            validate_image_size(value)
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return value
+    def validate(self, attrs):
+        #Sharing the image requires a radiologist who accepts the declaration; otherwise the declaration is not stored
+        if attrs.get("public", False) or attrs.get("research", False):
+            if not hasattr(self.context.get("user"), "physician"):
+                raise serializers.ValidationError({"declaration": "Only radiologists can make images public or allow their use for research"})
+            if not attrs.get("declaration", False):
+                raise serializers.ValidationError({"declaration": "You must accept the declaration to make images public or allow their use for research"})
+        else:
+            attrs["declaration"] = False
+        return attrs
     def create(self,validated_data):
         new=self.context["new"]
         return models.Nodule.objects.create(new=new, **validated_data)
-    def _abs(self, request, url: str) -> str:
-        return request.build_absolute_uri(url) if request else url
     def get_public_image_url(self, obj):
         # Solo dataset público
         if obj.new is not None or not obj.image:
@@ -48,20 +64,19 @@ class NodulePhysicistSerializer(serializers.ModelSerializer):
         base = settings.PUBLIC_MEDIA_BASE_URL.rstrip("/")
         return f"{base}{settings.PUBLIC_MEDIA_URL}{obj.full_image}"
 
+    #Relative to the API base url: absolute urls lose FORCE_SCRIPT_NAME (/djangoapp) behind the proxy
     def get_private_image_url(self, obj):
-        request = self.context.get("request")
-        return self._abs(request, f"/api/nodules/{obj.pk}/image/")
+        return f"/api/nodules/{obj.pk}/image/"
 
     def get_private_full_image_url(self, obj):
-        request = self.context.get("request")
-        return self._abs(request, f"/api/nodules/{obj.pk}/full-image/")
+        return f"/api/nodules/{obj.pk}/full-image/"
 
 class DescriptionSerializer(serializers.ModelSerializer):
-    # physicist=PhysicistSerializer(read_only=True)
+    # physician=PhysicianSerializer(read_only=True)
     nodule_id=serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(source="user.id", read_only=True)
     
-    # physicist_id=serializers.IntegerField(read_only=True)
+    # physician_id=serializers.IntegerField(read_only=True)
     class Meta:
         model=models.Description
         fields=["id","shape","margin","orientation","echogenicity","posterior","calcification","suggestivity","birads","nodule_id", "user_id"]        
@@ -80,7 +95,7 @@ class DescriptionSerializer(serializers.ModelSerializer):
 class NoduleDescriptionsSerializer(serializers.ModelSerializer):
     # descriptions=DescriptionSerializer(many=True,read_only=True)
     # descriptions__birads=serializers.StringRelatedField(read_only=True)
-    # descriptions__physicist_id=serializers.StringRelatedField(read_only=True)
+    # descriptions__physician_id=serializers.StringRelatedField(read_only=True)
     descriptions = serializers.SerializerMethodField()
     numDescriptions=serializers.IntegerField(read_only=True)
     numNodules2Times=serializers.IntegerField(read_only=True)
@@ -93,12 +108,10 @@ class NoduleDescriptionsSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Nodule
         fields=["id","name", "image","new","descriptions","numDescriptions","numNodules2Times","numNodulesDescribed","public_image_url","public_full_image_url","private_image_url","private_full_image_url"]
-    def _abs(self, request, url: str) -> str:
-        return request.build_absolute_uri(url) if request else url
     def get_descriptions(self, instance: models.Nodule):
         request = self.context["request"]
         user = request.user
-        # Filter the descriptions based on physicist ID (assuming 'physicist_id' is a field in Description model)
+        # Filter the descriptions based on physician ID (assuming 'physician_id' is a field in Description model)
         descriptions = instance.descriptions.select_related("user").filter(user=user)
         
         # Serialize the filtered descriptions
@@ -117,10 +130,9 @@ class NoduleDescriptionsSerializer(serializers.ModelSerializer):
         base = settings.PUBLIC_MEDIA_BASE_URL.rstrip("/")
         return f"{base}{settings.PUBLIC_MEDIA_URL}{obj.full_image}"
 
+    #Relative to the API base url: absolute urls lose FORCE_SCRIPT_NAME (/djangoapp) behind the proxy
     def get_private_image_url(self, obj):
-        request = self.context.get("request")
-        return self._abs(request, f"/api/nodules/{obj.pk}/image/")
+        return f"/api/nodules/{obj.pk}/image/"
 
     def get_private_full_image_url(self, obj):
-        request = self.context.get("request")
-        return self._abs(request, f"/api/nodules/{obj.pk}/full-image/")
+        return f"/api/nodules/{obj.pk}/full-image/"

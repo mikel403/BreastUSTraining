@@ -1,3 +1,4 @@
+import TranslationText from "../TranslationText";
 import { FormEvent, useRef, useState } from "react";
 import resetPassword from "../api/resetPassword";
 import { Button, FormLabel, Input } from "@chakra-ui/react";
@@ -28,7 +29,7 @@ const ChangeUserPage = () => {
       <form onSubmit={handleSubmit} id="main">
         <div className="mb-3">
           <FormLabel htmlFor="password" className="form-label">
-            <a>Password</a>
+            <a><TranslationText text={"Password"} /></a>
           </FormLabel>
           <Input
             ref={passwordref}
@@ -39,18 +40,15 @@ const ChangeUserPage = () => {
         </div>
         <div className="mb-3">
           <FormLabel htmlFor="password" className="form-label">
-            New username
-          </FormLabel>
+            <TranslationText text={"New username"} /> </FormLabel>
           <Input ref={new_userref} id="username" className="form-control" />
         </div>
         {username == "TestUser" && (
           <div className="text-danger">
-            As a test user you can not change the username
-          </div>
+            <TranslationText text={"As a test user you can not change the username"} /> </div>
         )}
         <Button mt={4} type="submit">
-          Change username
-        </Button>
+          <TranslationText text={"Change username"} /> </Button>
         <div className="mt-3" style={{ textAlign: "center" }}>
           {error && <p className="text-danger">{error}</p>}
           {fetchResult && <p className="text-success">{fetchResult}</p>}

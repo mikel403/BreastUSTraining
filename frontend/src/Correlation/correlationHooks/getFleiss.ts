@@ -10,7 +10,6 @@ const getFleiss = (
     
   ) => {
     axios.post("/api/intercorrelation_Fleiss").then((res) => {
-      console.log(res.data);
       setFleiss(res.data["correlation"]);
       setNumFleiss(res.data["num_descriptor"]);
     });

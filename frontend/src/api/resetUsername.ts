@@ -31,7 +31,6 @@ const resetUsername = ({ setFetchResult, setError }: Props) => {
           // Something happened in setting up the request that triggered an Error
           setError(err.message);
         }
-        console.log(err.config);
       });
   return reset;
 };

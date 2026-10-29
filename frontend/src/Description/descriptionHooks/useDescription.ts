@@ -14,8 +14,10 @@ const useDescription = (
   
     // return AIDescription(nodule_id);
     return useQuery<Description[], Error>({
-      queryKey: ["descriptions"],
+      // The id is part of the key so each nodule has its own cached descriptions
+      queryKey: ["descriptions", nodule_id],
       queryFn: fetchDescription,
+      enabled: !!nodule_id,
     });
   };
 

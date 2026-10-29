@@ -1,5 +1,4 @@
 import axios from "../../libs/axios";
-import { Description, Panel } from "./DescriptionInfo";
 
 const CalculateDescriptionRadiologist = (
   nodule_id: string | undefined,
@@ -14,16 +13,14 @@ const CalculateDescriptionRadiologist = (
         "/physician_ground_truth",
     )
     .then((res) => {
-      console.log(res.data);
       return {
         DescriptionRadiologist: res.data,
         error: res.data.error || null,
       };
     })
     .catch((error) => {
-      const detail = error.response.data?.detail;
+      const detail = error.response?.data?.detail;
       if (error.response && error.response.status === 404) {
-        console.log(error.response);
         if (detail === "physician_not_found") {
           return {
             DescriptionRadiologist: undefined,

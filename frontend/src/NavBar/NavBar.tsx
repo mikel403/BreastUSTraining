@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import TranslationText from "../TranslationText";
 import {
   Center,
   Grid,
@@ -10,6 +12,11 @@ import {
   Box,
   AccordionIcon,
   AccordionPanel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import logoutRequest from "../api/logoutRequest";
@@ -26,6 +33,11 @@ const NavBar = () => {
   const accordionprofileRef = useRef<HTMLDivElement>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  const accordionlanguageRef = useRef<HTMLDivElement>(null);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+
+  const { i18n } = useTranslation();
+
   const handleClickOutside = (event: MouseEvent) => {
     if (
       accordiondescribeRef.current &&
@@ -39,6 +51,12 @@ const NavBar = () => {
     ) {
       setIsProfileOpen(false);
     }
+    if (
+      accordionlanguageRef.current &&
+      !accordionlanguageRef.current.contains(event.target as Node)
+    ) {
+      setIsLanguageOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +68,10 @@ const NavBar = () => {
   }, []);
   //El logo hay que poner breastultrasound antes en producción
   return (
-    <Grid templateAreas={`"home describe my_profile" `}>
+    <Grid
+      templateAreas={`"home describe my_profile language"`}
+      templateColumns="1fr 1fr 1fr 110px"
+    >
       <GridItem area="home" id="grid">
         <div
           onClick={() => navigate("/breastultrasound/home")}
@@ -59,7 +80,7 @@ const NavBar = () => {
           <HStack>
             <Image src={logo} boxSize="78px" />
             <Center w="100%">
-              <a>Home</a>
+              <a><TranslationText text={"Home"} /></a>
             </Center>
           </HStack>
         </div>
@@ -74,8 +95,7 @@ const NavBar = () => {
           <AccordionItem className="accordion-item">
             <AccordionButton className="accordion-button">
               <Box flex="1" textAlign="center">
-                Describe Ultrasound Images
-              </Box>
+                <TranslationText text={"Describe Ultrasound Images"} /> </Box>
               <AccordionIcon />
             </AccordionButton>
 
@@ -88,8 +108,7 @@ const NavBar = () => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                From Database
-              </div>
+                <TranslationText text={"From Database"} /> </div>
               <div
                 className="accordion-link"
                 onClick={() => {
@@ -98,8 +117,7 @@ const NavBar = () => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                New Image
-              </div>
+                <TranslationText text={"New Image"} /> </div>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
@@ -114,8 +132,7 @@ const NavBar = () => {
           <AccordionItem className="accordion-item">
             <AccordionButton className="accordion-button">
               <Box flex="1" textAlign="center">
-                Profile Options
-              </Box>
+                <TranslationText text={"Profile Options"} /> </Box>
               <AccordionIcon />
             </AccordionButton>
 
@@ -128,8 +145,7 @@ const NavBar = () => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                Results
-              </div>
+                <TranslationText text={"Results"} /> </div>
               {/* <div
                 className="accordion-link"
                 onClick={() => {
@@ -148,8 +164,7 @@ const NavBar = () => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                Edit Profile
-              </div>
+                <TranslationText text={"Edit Profile"} /> </div>
               <div
                 className="accordion-link"
                 onClick={() => {
@@ -158,8 +173,7 @@ const NavBar = () => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                Log out
-              </div>
+                <TranslationText text={"Log out"} /> </div>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
@@ -167,8 +181,48 @@ const NavBar = () => {
           onClick={() => navigate("/breastultrasound/described-nodules")}
           style={{ cursor: "pointer" }}
         >
-          My Nodules
-        </div>
+          <TranslationText text={"My Nodules"} /> </div>
+      </GridItem>
+      <GridItem area="language" id="grid">
+        <Accordion
+          allowToggle
+          ref={accordionlanguageRef}
+          index={isLanguageOpen ? 0 : -1}
+          onChange={() => setIsLanguageOpen(!isLanguageOpen)}
+        >
+          <AccordionItem className="accordion-item">
+            <AccordionButton className="accordion-button">
+              <Box flex="1" textAlign="center">
+                {i18n.resolvedLanguage?.toUpperCase() || "EN"}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+
+            <AccordionPanel className="accordion-panel">
+              <div
+                className="accordion-link"
+                onClick={() => {
+                  void i18n.changeLanguage("en");
+                  setIsLanguageOpen(false);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                English
+              </div>
+
+              <div
+                className="accordion-link"
+                onClick={() => {
+                  void i18n.changeLanguage("es");
+                  setIsLanguageOpen(false);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                Español
+              </div>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </GridItem>
     </Grid>
   );

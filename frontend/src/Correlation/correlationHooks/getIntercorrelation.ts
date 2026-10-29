@@ -16,7 +16,7 @@ const getIntercorrelation = (physician: string) => {
         return {
           correlation: null,
           num_descriptor: null,
-          error: 'Physician not found',
+          error: 'This user was not found or has no descriptions',
         };
       } else {
         return {
