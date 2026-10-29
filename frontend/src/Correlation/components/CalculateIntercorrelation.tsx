@@ -3,20 +3,20 @@ import React, { FormEvent, useRef, useState} from "react";
 import {Correlation} from "../correlationHooks/CorrelationInfo";
 import { Alert, Button, FormLabel, Input, Select } from "@chakra-ui/react";
 import getIntercorrelation from "../correlationHooks/getIntercorrelation";
-import usePhysicist from "../correlationHooks/usePhysicist";
+import usePhysicians from "../correlationHooks/usePhysicians";
 
 interface Props {
   onCalculate: (physician: string, correlation: Correlation, numcorrelation: Correlation) => void;
 }
 const CalculateIntercorrelation = ({ onCalculate }: Props) => {
-  const { data: physicists, error, isLoading } = usePhysicist();
+  const { data: physicians, error, isLoading } = usePhysicians();
 
-  const physicistRef = useRef<HTMLInputElement>(null);
+  const physicianRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (physicistRef.current) {
-      const physician = physicistRef.current.value;
+    if (physicianRef.current) {
+      const physician = physicianRef.current.value;
       getIntercorrelation(physician).then(({ correlation, num_descriptor, error }) => {
         if (error) {
           setErrorMessage(error);
@@ -30,16 +30,16 @@ const CalculateIntercorrelation = ({ onCalculate }: Props) => {
   return (
     <>
       <div className="mb-3">
-        <FormLabel htmlFor="physicist" className="form-label">
+        <FormLabel htmlFor="physician" className="form-label">
           <TranslationText text={"Search for a radiologist and evaluate your agreement using Cohen's kappa."} /> </FormLabel>
         <Input
-          ref={physicistRef}
-          id="physicist"
+          ref={physicianRef}
+          id="physician"
           type="text"
           className="form-control"
         />
         {/* <Select
-          ref={physicistref}
+          ref={physicianref}
           // onChange={(event) => {
           //   timesDesc = event.currentTarget.value;
           // }}

@@ -30,7 +30,7 @@ const CalculateStatistics = () => {
   const [physicians, setPhysicians] = useState<number>();
   const [isChartClick, setChartClick] = useState(false);
   const [isTableClick, setTableClick] = useState(false);
-  const physicistRef = useRef<HTMLInputElement>(null);
+  const physicianRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [characNormalize, setCharacNormalize] = useState<boolean>(false);
@@ -54,10 +54,10 @@ const CalculateStatistics = () => {
     setChartClick(!isChartClick);
   };
   const handleotherCharts = () => {
-    if (physicistRef.current) {
+    if (physicianRef.current) {
       setErrorMessage(null);
       axios
-        .post<Statistics>("/api/" + physicistRef.current.value + "/statistics")
+        .post<Statistics>("/api/" + physicianRef.current.value + "/statistics")
         .then((res) => {
           setOtherData(res.data.statistics);
           setOtherBiradsData(res.data.statistics_birads);
@@ -98,7 +98,7 @@ const CalculateStatistics = () => {
       {data && isChartClick && (
         <Box display={"flex"} justifyContent={"space-between"} mt={4}>
           <Box width={"46%"}>
-            <FormLabel htmlFor="physicist" className="form-label">
+            <FormLabel htmlFor="physician" className="form-label">
               <TranslationText text={"The graphs display the distribution of annotation descriptors (including BI-RADS descriptors and related tumour features) across BI-RADS assessment categories. Select a normalisation method to interpret the patterns:"} /> </FormLabel>
             <div className="form-check">
               <input
@@ -130,12 +130,12 @@ const CalculateStatistics = () => {
             </div>
           </Box>
           <Box width={"46%"}>
-            <FormLabel htmlFor="physicist" className="form-label">
+            <FormLabel htmlFor="physician" className="form-label">
               <TranslationText text={"Compare your patterns with those of other radiologists. “Overall” includes all users except yourself."} /> </FormLabel>
             <Input
-              ref={physicistRef}
+              ref={physicianRef}
               defaultValue={"Overall"}
-              id="physicist"
+              id="physician"
               type="text"
               className="form-control"
             />
@@ -161,12 +161,12 @@ const CalculateStatistics = () => {
               <h2>
                 <TranslationText text={"Compared with"} />{" "}
                 {/* "Overall" is the value sent to the backend, only its label is translated */}
-                {!physicistRef.current || physicistRef.current.value === "Overall" ? (
+                {!physicianRef.current || physicianRef.current.value === "Overall" ? (
                   <>
                     <TranslationText text={"Overall"} /> (<TranslationText text={"experts:"} /> {physicians})
                   </>
                 ) : (
-                  physicistRef.current.value
+                  physicianRef.current.value
                 )}
               </h2>
             </Center>

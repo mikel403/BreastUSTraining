@@ -177,7 +177,7 @@ These indexes optimize queries for comparisons, statistics, and history retrieva
 
 ---
 
-### Physicist
+### Physician
 
 Extends the Django user model via a OneToOne relationship.
 

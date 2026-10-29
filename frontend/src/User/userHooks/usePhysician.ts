@@ -10,7 +10,7 @@ const usePhysician = (options: UsePhysicianOptions = {}) => {
     const fetchPhysician = () =>
       axios
         .get<Physician>(
-          "/api/physicists/me"
+          "/api/physicians/me"
         )
         .then((res) => res.data);
   

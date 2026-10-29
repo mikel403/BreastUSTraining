@@ -3,7 +3,7 @@ import {Physician} from "./userInfo"
 
 const setPhysician = (Physician: any) => {
     axios
-      .put("/api/physicists/me/", Physician)
+      .put("/api/physicians/me/", Physician)
       .then((res) => res.data);
   };
   

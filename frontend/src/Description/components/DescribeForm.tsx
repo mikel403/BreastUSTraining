@@ -154,11 +154,11 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
   // const [AIsuggestivity, setAIsuggestivity] = useState<string | null>(null);
   // const [AIbirads, setAIbirads] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const physicistRef = useRef<HTMLInputElement>(null);
+  const physicianRef = useRef<HTMLInputElement>(null);
   const handleDescriptionRadilogist = (event: FormEvent) => {
     event.preventDefault();
-    if (physicistRef.current) {
-      const physician = physicistRef.current.value;
+    if (physicianRef.current) {
+      const physician = physicianRef.current.value;
       CalculateDescriptionRadiologist(id.toString(), physician).then(
         ({ DescriptionRadiologist, error }) => {
           if (error) {
@@ -432,8 +432,8 @@ const DescribeForm = ({ id, image, full_image, isPublic }: Props) => {
         <Box flex="1">
           <VStack align="stretch" spacing={2} h="100%">
             <Input
-              ref={physicistRef}
-              id="physicist"
+              ref={physicianRef}
+              id="physician"
               type="text"
               isDisabled={!isDescribed}
             />
